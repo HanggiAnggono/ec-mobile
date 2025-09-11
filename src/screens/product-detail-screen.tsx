@@ -3,13 +3,6 @@ import { Button } from '@/components/button'
 import { useAddToCart } from '@/module/cart/hook/use-add-to-cart'
 import { useGetProduct } from '@/module/product/hook/use-get-product'
 import { formatCurrency } from '@/module/utils'
-import {
-  AntDesign,
-  Ionicons,
-  MaterialIcons,
-  Feather,
-  Entypo,
-} from '@expo/vector-icons'
 import { useRoute } from '@react-navigation/native'
 import clsx from 'clsx'
 import { useState } from 'react'
@@ -21,7 +14,6 @@ import {
   Text,
   View,
 } from 'react-native'
-import { v4 } from "uuid"
 
 export const ProductDetailPage = () => {
   const { params = {} } = useRoute()
