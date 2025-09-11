@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { FlatList, ListRenderItem, Text, View } from 'react-native'
 import { Button } from '@/components/button'
+import { useNavigation } from '@react-navigation/native'
 
 // onboarding ecommerce
 const ONBOARDING_DATA = [
@@ -28,6 +29,8 @@ const ONBOARDING_DATA = [
 export const OnboardingScreen = () => {
   const [index, setIndex] = useState(0)
   const flatListRef = useRef<FlatList>(null)
+  const nav = useNavigation()
+  const isLastSlide = index == ONBOARDING_DATA.length - 1
 
   const renderItem: ListRenderItem<(typeof ONBOARDING_DATA)[0]> = ({
     item,
@@ -54,8 +57,6 @@ export const OnboardingScreen = () => {
   const goToNext = () => {
     const newIndex = index + 1
 
-    console.log({ newIndex })
-
     if (newIndex < ONBOARDING_DATA.length) {
       flatListRef.current?.scrollToIndex({ index: newIndex })
       setTimeout(() => setIndex(newIndex), 400)
@@ -69,6 +70,10 @@ export const OnboardingScreen = () => {
       flatListRef.current?.scrollToIndex({ index: newIndex })
       setTimeout(() => setIndex(newIndex), 400)
     }
+  }
+
+  const goToHome = () => {
+    nav.navigate('Home' as never)
   }
 
   return (
@@ -87,13 +92,19 @@ export const OnboardingScreen = () => {
         {ONBOARDING_DATA.map((item, i) => (
           <View
             key={item.id}
-            className={`size-2 rounded-full ${item.id === ONBOARDING_DATA[index].id ? 'bg-gray-200' : 'bg-gray-400'}`}
+            className={`size-2 rounded-full ${
+              item.id === ONBOARDING_DATA[index].id
+                ? 'bg-blue-500'
+                : 'bg-gray-400'
+            }`}
           />
         ))}
       </View>
       <View className="absolute bottom-10 w-full px-10 flex flex-row justify-between">
         <Button onPress={goToPrev}>Previous</Button>
-        <Button onPress={goToNext}>Next</Button>
+        <Button onPress={isLastSlide ? goToHome : goToNext}>
+          {isLastSlide ? 'Continue' : 'Next'}
+        </Button>
       </View>
     </View>
   )
