@@ -416,7 +416,6 @@ export interface components {
             updatedAt: string;
         };
         AddToCartDto: {
-            sessionId: string;
             productVariantId: number;
             quantity: number;
             cartId?: number;

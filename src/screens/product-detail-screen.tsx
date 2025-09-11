@@ -30,9 +30,7 @@ export const ProductDetailPage = () => {
   const [isOpen, setIsOpen] = useState(false)
   const { mutateAsync: addToCart, isPending, error } = useAddToCart()
 
-  const variants = data?.variants?.length
-    ? data?.variants
-    : fakeVariants(data?.name!)
+  const variants = data?.variants || []
   const [variantId, setVariantId] = useState(variants?.[0]?.id || 0)
   const [quantity, setQuantity] = useState(1)
   const selectedVariant = variants?.find((v) => v.id === variantId)
@@ -43,11 +41,12 @@ export const ProductDetailPage = () => {
 
   async function handleSubmit() {
     try {
+      console.log('submitting')
       await addToCart({
         body: {
           productVariantId: variantId,
           quantity,
-          sessionId: v4(),
+          // sessionId,
         },
       })
       alert('Added to cart')
@@ -182,16 +181,3 @@ export const ProductDetailPage = () => {
   )
 }
 
-const fakeVariants = (
-  name: string
-): NonNullable<
-  NonNullable<ReturnType<typeof useGetProduct>['data']>['variants']
-> =>
-  Array.from({ length: 5 }).map((_, i) => {
-    return {
-      id: 1 + i,
-      name: `${name} Variant ${i + 1}`,
-      price: 340000,
-      stock_quantity: 10,
-    }
-  })
