@@ -267,7 +267,7 @@ export interface components {
         CreateProductDto: {
             name: string;
             description: string;
-            categoryId?: number | null;
+            categoryId?: number;
         };
         ProductVariant: {
             id: number;
@@ -280,6 +280,7 @@ export interface components {
             id: number;
             name: string;
             description: string;
+            categoryId: number;
             category: components["schemas"]["ProductCategory"];
             variants: components["schemas"]["ProductVariant"][];
         };

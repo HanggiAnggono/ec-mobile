@@ -5,7 +5,7 @@ import { useGetProduct } from '@/module/product/hook/use-get-product'
 import { formatCurrency } from '@/module/utils'
 import { useRoute } from '@react-navigation/native'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   FlatList,
   ImageBackground,
@@ -26,6 +26,12 @@ export const ProductDetailPage = () => {
   const [variantId, setVariantId] = useState(variants?.[0]?.id || 0)
   const [quantity, setQuantity] = useState(1)
   const selectedVariant = variants?.find((v) => v.id === variantId)
+
+  useEffect(() => {
+    if (variants?.length) {
+      setVariantId(variants[0].id)
+    }
+  }, [variants])
 
   function handleAddToCart() {
     setIsOpen(true)
@@ -98,19 +104,7 @@ export const ProductDetailPage = () => {
             renderItem={renderVariants}
             className="my-5 -mx-4 px-4"
           />
-          <Text className="text-lg text-slate-500">
-            {data?.description}
-            {[1, 2, 3].map((i) => {
-              return (
-                <Text key={i}>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Exercitationem quis minus nobis laudantium culpa maiores et.
-                  Accusamus provident ipsum repellendus iusto laudantium eum
-                  quia doloribus beatae, suscipit adipisci cumque dicta?{'\n\n'}
-                </Text>
-              )
-            })}
-          </Text>
+          <Text className="text-lg text-slate-500">{data?.description}</Text>
         </View>
       </ScrollView>
 
