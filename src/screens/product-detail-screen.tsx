@@ -89,7 +89,7 @@ export const ProductDetailPage = () => {
     <View className="flex flex-1 bg-white">
       <ScrollView contentContainerClassName="pb-24">
         <ImageBackground
-          source={{ uri: 'https://picsum.photos/400/400' }}
+          source={{ uri: `https://picsum.photos/140/140?random=${data?.name}` }}
           className="w-full h-96 bg-gray-200"
         />
         <View className="p-4">
