@@ -1,9 +1,8 @@
 import { Button } from '@/components/button'
 import { useCheckoutCart } from '@/module/cart/hook/use-checkout-cart'
 import { useGetCart } from '@/module/cart/hook/use-get-cart'
+import { CartItem } from '@/shared/types/api'
 import { FlatList, Text, View, Image } from 'react-native'
-
-type Cart = NonNullable<ReturnType<typeof useGetCart>['data']>
 
 export const CartScreen = () => {
   const { data: cart } = useGetCart()
@@ -17,7 +16,7 @@ export const CartScreen = () => {
     checkout({ params: { path: { sessionId: cart.sessionId } } })
   }
 
-  function renderItem({ item }: { item: Cart['items'][number] }) {
+  function renderItem({ item }: { item: CartItem }) {
     return (
       <View className="bg-white m-2 p-4 rounded-lg shadow">
         <View className="flex-row">

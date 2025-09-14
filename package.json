@@ -7,7 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "generate": "openapi-typescript http://localhost:3000/api/docs-json --output src/shared/types/api.ts"
+    "generate": "openapi-typescript http://localhost:3000/api/docs-json --root-types true --root-types-no-schema-prefix true --output src/shared/types/api.ts"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",

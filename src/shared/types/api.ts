@@ -447,6 +447,30 @@ export interface components {
     headers: never;
     pathItems: never;
 }
+export type CreateProductDto = components['schemas']['CreateProductDto'];
+export type ProductVariant = components['schemas']['ProductVariant'];
+export type Product = components['schemas']['Product'];
+export type ProductCategory = components['schemas']['ProductCategory'];
+export type FindAllProductDto = components['schemas']['FindAllProductDto'];
+export type VariantDto = components['schemas']['VariantDto'];
+export type FindOneProductDto = components['schemas']['FindOneProductDto'];
+export type UpdateProductDto = components['schemas']['UpdateProductDto'];
+export type CreateVariantDto = components['schemas']['CreateVariantDto'];
+export type CreateProductCategoryDto = components['schemas']['CreateProductCategoryDto'];
+export type UpdateProductCategoryDto = components['schemas']['UpdateProductCategoryDto'];
+export type CreateUserDto = components['schemas']['CreateUserDto'];
+export type User = components['schemas']['User'];
+export type OrderItem = components['schemas']['OrderItem'];
+export type Payment = components['schemas']['Payment'];
+export type Order = components['schemas']['Order'];
+export type UpdateUserDto = components['schemas']['UpdateUserDto'];
+export type CreateOrderDto = components['schemas']['CreateOrderDto'];
+export type UpdateOrderDto = components['schemas']['UpdateOrderDto'];
+export type Cart = components['schemas']['Cart'];
+export type CartItem = components['schemas']['CartItem'];
+export type AddToCartDto = components['schemas']['AddToCartDto'];
+export type UpdateCartItemDto = components['schemas']['UpdateCartItemDto'];
+export type DeleteCartDto = components['schemas']['DeleteCartDto'];
 export type $defs = Record<string, never>;
 export interface operations {
     AppController_getHello: {
