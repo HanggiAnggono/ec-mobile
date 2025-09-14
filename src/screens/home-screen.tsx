@@ -56,7 +56,7 @@ const ProductCard = ({ product }: { product: product }) => {
         <View className="h-[15rem] overflow-hidden rounded-t-xl bg-red-400">
           <ImageBackground
             source={{
-              uri: 'https://picsum.photos/140/140',
+              uri: `https://picsum.photos/140/140?random=${product.name}`,
             }}
             className="size-full "
           />

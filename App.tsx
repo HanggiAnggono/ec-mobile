@@ -12,6 +12,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ProductDetailPage } from '@/screens/product-detail-screen'
+import { CartScreen } from '@/screens/cart-screen'
 
 const Stack = createStackNavigator()
 
@@ -46,6 +47,11 @@ export default function App() {
             name="ProductDetail"
             options={{ title: 'Product Detail' }}
             component={ProductDetailPage}
+          />
+          <Stack.Screen
+            name="Cart"
+            options={{ title: 'Your Cart' }}
+            component={CartScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

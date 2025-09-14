@@ -1,0 +1,30 @@
+import { apiClient } from '@/module/core'
+import { useCart } from '@/store/cart.store'
+import { useEffect } from 'react'
+
+export const useGetCart = () => {
+  const { cartSessionId, setCartSessionId } = useCart()
+
+  const query = apiClient.useQuery('get', '/cart', {
+    params: { query: { sessionId: getSessionId() } },
+  })
+
+  const { data: cart } = query
+
+  function getSessionId() {
+    let sessionId = cartSessionId
+
+    if (!cart && !cartSessionId) {
+      sessionId = ''
+    }
+    return sessionId
+  }
+
+  useEffect(() => {
+    if (cart?.sessionId && cart.sessionId !== cartSessionId) {
+      setCartSessionId(cart.sessionId)
+    }
+  }, [cart?.sessionId, cartSessionId])
+
+  return query
+}
