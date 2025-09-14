@@ -3,6 +3,7 @@ import { Button } from '@/components/button'
 import { useAddToCart } from '@/module/cart/hook/use-add-to-cart'
 import { useGetProduct } from '@/module/product/hook/use-get-product'
 import { formatCurrency } from '@/module/utils'
+import { useCart } from '@/store/cart.store'
 import { useRoute } from '@react-navigation/native'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
@@ -20,6 +21,7 @@ export const ProductDetailPage = () => {
   const { id } = params as { id: number }
   const { data, isLoading } = useGetProduct(id)
   const [isOpen, setIsOpen] = useState(false)
+  const { cartSessionId, setCartSessionId } = useCart()
   const { mutateAsync: addToCart, isPending, error } = useAddToCart()
 
   const variants = data?.variants || []
@@ -44,8 +46,10 @@ export const ProductDetailPage = () => {
         body: {
           productVariantId: variantId,
           quantity,
-          // sessionId,
+          sessionId: cartSessionId || '',
         },
+      }).then((res) => {
+        setCartSessionId(res.sessionId)
       })
       alert('Added to cart')
     } catch (error) {

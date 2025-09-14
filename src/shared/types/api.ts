@@ -394,7 +394,6 @@ export interface components {
         Cart: {
             id: number;
             userId: number;
-            user: components["schemas"]["User"];
             items: components["schemas"]["CartItem"][];
             isActive: boolean;
             /** Format: date-time */
@@ -419,11 +418,12 @@ export interface components {
         AddToCartDto: {
             productVariantId: number;
             quantity: number;
-            cartId?: number;
+            sessionId?: string;
         };
         UpdateCartItemDto: {
             quantity: number;
         };
+        DeleteCartDto: Record<string, never>;
     };
     responses: never;
     parameters: never;
@@ -949,13 +949,23 @@ export interface operations {
     };
     CartController_getCart: {
         parameters: {
-            query?: never;
+            query?: {
+                sessionId?: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Cart"];
+                };
+            };
             default: {
                 headers: {
                     [name: string]: unknown;
@@ -973,7 +983,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeleteCartDto"];
+            };
+        };
         responses: {
             default: {
                 headers: {
@@ -998,6 +1012,14 @@ export interface operations {
             };
         };
         responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Cart"];
+                };
+            };
             default: {
                 headers: {
                     [name: string]: unknown;
