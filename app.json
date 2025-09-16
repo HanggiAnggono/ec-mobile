@@ -20,11 +20,17 @@
         "foregroundImage": "./assets/EC.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.hanggi.ecmobile"
     },
     "web": {
       "favicon": "./assets/EC.png",
       "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f2e636e7-633d-48ac-a2ff-78c92cc668d3"
+      }
     }
   }
 }
