@@ -112,6 +112,15 @@ export const ProductDetailPage = () => {
         </View>
       </ScrollView>
 
+      <View className="absolute bottom-safe-or-20 right-safe-or-5 p-3  bg-white border border-blue-400 rounded-full">
+        <View className="flex flex-row justify-end gap-1">
+          <Button icon="message" className="flex items-center justify-center">
+            Chat
+          </Button>
+          <Button onPress={handleAddToCart}>Add To Cart</Button>
+        </View>
+      </View>
+
       <BottomSheet isOpen={isOpen} setIsOpen={setIsOpen}>
         <View className="p-2">
           <View className="flex-row gap-2">
@@ -158,15 +167,6 @@ export const ProductDetailPage = () => {
           </Button>
         </View>
       </BottomSheet>
-
-      <View className="absolute bottom-safe-or-10 right-safe-or-5 p-3  bg-white border border-blue-400 rounded-full">
-        <View className="flex flex-row justify-end gap-1">
-          <Button icon="message" className="flex items-center justify-center">
-            Chat
-          </Button>
-          <Button onPress={handleAddToCart}>Add To Cart</Button>
-        </View>
-      </View>
     </View>
   )
 }

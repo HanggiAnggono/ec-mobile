@@ -26,7 +26,7 @@ export const Button = ({
         return (
           <View
             className={clsx(
-              'flex flex-row items-center gap-2 p-3 py-2  rounded-full',
+              'flex flex-row items-center gap-2 p-3 py-2 overflow-hidden rounded-full',
               {
                 'bg-blue-500': pressed,
               }
