@@ -141,6 +141,10 @@ export const useAuthSignup = () => {
     return apiClient.useMutation('post', '/auth/signup' as const)
   }
 
+export const useAuthLogin = () => {
+    return apiClient.useMutation('post', '/auth/login' as const)
+  }
+
 export const usePaymentCreatePayment = () => {
     return apiClient.useMutation('post', '/payment' as const)
   }
