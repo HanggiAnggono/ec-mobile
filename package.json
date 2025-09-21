@@ -7,7 +7,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "generate": "openapi-typescript http://localhost:3000/api/docs-json --root-types true --root-types-no-schema-prefix true --output src/shared/types/api.ts"
+    "generate:open-api": "openapi-typescript http://localhost:3000/api/docs-json --root-types true --root-types-no-schema-prefix true --output src/shared/types/api.ts",
+    "generate:query": "tsx scripts/openapi-react-query.ts",
+    "generate": "npm run generate:open-api && npm run generate:query"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
@@ -38,6 +40,7 @@
     "openapi-typescript": "^7.9.1",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   },
   "private": true

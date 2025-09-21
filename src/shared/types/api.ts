@@ -260,6 +260,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/signup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["AuthController_signup"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/payment": {
         parameters: {
             query?: never;
@@ -399,7 +415,8 @@ export interface components {
             totalAmount: number;
             /** @enum {string} */
             order_status: "pending" | "pending_payment" | "payment_received" | "order_confirmed" | "failed" | "expired" | "awaiting_shipment" | "on_hold" | "awaiting_pickup" | "completed" | "cancelled";
-            payments: components["schemas"]["Payment"][];
+            payment: components["schemas"]["Payment"];
+            paymentId: number;
         };
         UpdateUserDto: Record<string, never>;
         CreateOrderDto: {
@@ -440,6 +457,21 @@ export interface components {
             quantity: number;
         };
         DeleteCartDto: Record<string, never>;
+        SignupDto: {
+            username: string;
+            firstname: string;
+            lastname: string;
+            /** Format: email */
+            email: string;
+            password: string;
+        };
+        SignupResponseDto: {
+            id: number;
+            username: string;
+            firstname: string;
+            lastname: string;
+            email: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -471,6 +503,8 @@ export type CartItem = components['schemas']['CartItem'];
 export type AddToCartDto = components['schemas']['AddToCartDto'];
 export type UpdateCartItemDto = components['schemas']['UpdateCartItemDto'];
 export type DeleteCartDto = components['schemas']['DeleteCartDto'];
+export type SignupDto = components['schemas']['SignupDto'];
+export type SignupResponseDto = components['schemas']['SignupResponseDto'];
 export type $defs = Record<string, never>;
 export interface operations {
     AppController_getHello: {
@@ -1150,7 +1184,41 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["Cart"];
+                };
+            };
+        };
+    };
+    AuthController_signup: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignupDto"];
+            };
+        };
+        responses: {
+            /** @description User signup */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignupDto"];
+                };
+            };
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignupResponseDto"];
+                };
             };
         };
     };
