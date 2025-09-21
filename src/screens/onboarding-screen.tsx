@@ -73,7 +73,7 @@ export const OnboardingScreen = () => {
   }
 
   const goToHome = () => {
-    nav.navigate('Home' as never)
+    nav.navigate('Login' as never)
   }
 
   return (

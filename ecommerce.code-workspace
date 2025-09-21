@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../ec-be-core"
+		},
+		{
+			"path": "../ec-fe-admin"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}

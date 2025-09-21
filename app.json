@@ -13,7 +13,18 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hanggi.ecmobile",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "build": {
+        "development": {
+          "ios": {
+            "simulator": true
+          }
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {

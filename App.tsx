@@ -13,8 +13,11 @@ import {
 } from '@tanstack/react-query'
 import { ProductDetailPage } from '@/screens/product-detail-screen'
 import { CartScreen } from '@/screens/cart-screen'
+import { LoginScreen } from '@/screens/login-screen'
+import { RootStackParamList } from '@/screens'
+import { SignupScreen } from '@/screens/signup-screen'
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator<RootStackParamList>()
 
 export default function App() {
   const [client] = React.useState(
@@ -36,11 +39,23 @@ export default function App() {
   return (
     <QueryClientProvider client={client}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator>
           <Stack.Screen
             name="Onboarding"
             options={{ headerShown: false }}
             component={OnboardingScreen}
+          />
+          {/* login screen */}
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerLeftContainerStyle: { opacity: 0 } }}
+          />
+          {/* signup screen */}
+          <Stack.Screen
+            name="Signup"
+            component={SignupScreen}
+            options={{ headerLeftContainerStyle: { opacity: 0 } }}
           />
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen
