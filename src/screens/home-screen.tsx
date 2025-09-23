@@ -1,6 +1,7 @@
 import { Button } from '@/components/button'
 import { CartContainer } from '@/containers/cart'
 import { useGetProducts } from '@/module/product/hook/use-get-products'
+import { useProductsFindAll } from '@/shared/query/api-hooks'
 import { AntDesign } from '@expo/vector-icons'
 import { Link, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { StackNavigationOptions } from '@react-navigation/stack'
@@ -10,7 +11,12 @@ import { FlatList, ImageBackground, Text, View } from 'react-native'
 type product = NonNullable<ReturnType<typeof useGetProducts>['data']>[number]
 
 export const HomeScreen = () => {
-  const { data: products = [], isLoading } = useGetProducts()
+  const {
+    data: products = [],
+    isLoading,
+    error,
+    refetch,
+  } = useProductsFindAll()
 
   const { setOptions } = useNavigation()
 
@@ -35,6 +41,17 @@ export const HomeScreen = () => {
       </Link>
     )
   }, [])
+
+  if (error) {
+    return (
+      <View className="flex flex-1 flex-col justify-center items-center">
+        <Text>Error: {String(error)}</Text>
+        <Button className="mt-3" onPress={() => refetch()} icon="reload">
+          Reload
+        </Button>
+      </View>
+    )
+  }
 
   return (
     <View>

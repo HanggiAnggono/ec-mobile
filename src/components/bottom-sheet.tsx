@@ -32,12 +32,12 @@ export const BottomSheet = ({ children, isOpen, setIsOpen }) => {
         ref={bgRef}
         animation="fadeIn"
         duration={300}
-        className="size-full bg-black/70"
+        className="h-screen w-screen bg-black/70"
         onTouchEnd={handleBackdropTouch}
       />
       <Animatable.View
         ref={sheetRef}
-        className="absolute bottom-0 w-full bg-white border border-slate-400 pt-2 pb-safe-or-10 rounded-t-2xl z-20"
+        className="absolute bottom-0 w-screen bg-white border border-slate-400 pt-2 pb-safe-or-10 rounded-t-2xl z-20"
         animation="slideInUp"
         duration={300}
         pointerEvents="auto"

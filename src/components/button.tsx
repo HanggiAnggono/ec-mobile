@@ -19,7 +19,7 @@ export const Button = ({
     <Pressable
       {...props}
       onPress={onPress}
-      className={clsx('self-start', className)}
+      className={className}
       disabled={disabled}
     >
       {({ pressed }) => {
