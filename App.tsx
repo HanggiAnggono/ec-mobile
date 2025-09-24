@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { Button, StyleSheet, Text, View } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
@@ -16,10 +16,13 @@ import { CartScreen } from '@/screens/cart-screen'
 import { LoginScreen } from '@/screens/login-screen'
 import { RootStackParamList } from '@/screens'
 import { SignupScreen } from '@/screens/signup-screen'
+import { fetchClient } from '@/module/core'
+import { useAuthStore } from '@/store/auth.store'
 
 const Stack = createStackNavigator<RootStackParamList>()
 
 export default function App() {
+  const { token } = useAuthStore()
   const [client] = React.useState(
     () =>
       new QueryClient({
@@ -36,10 +39,21 @@ export default function App() {
       })
   )
 
+  useEffect(() => {
+    fetchClient.use({
+      onRequest: async (cl) => {
+        cl.request.headers.set('Authorization', `Bearer ${token}`)
+        return cl.request
+      },
+    })
+  }, [token, fetchClient])
+
+  console.log({ token })
+
   return (
     <QueryClientProvider client={client}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName={token ? 'Home' : 'Onboarding'}>
           <Stack.Screen
             name="Onboarding"
             options={{ headerShown: false }}
