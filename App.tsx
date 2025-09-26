@@ -40,37 +40,41 @@ export default function App() {
   )
 
   useEffect(() => {
-    fetchClient.use({
-      onRequest: async (cl) => {
-        cl.request.headers.set('Authorization', `Bearer ${token}`)
-        return cl.request
-      },
-    })
+    if (token) {
+      fetchClient.use({
+        onRequest: async (cl) => {
+          cl.request.headers.set('Authorization', `Bearer ${token}`)
+          return cl.request
+        },
+      })
+    }
   }, [token, fetchClient])
-
-  console.log({ token })
 
   return (
     <QueryClientProvider client={client}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={token ? 'Home' : 'Onboarding'}>
-          <Stack.Screen
-            name="Onboarding"
-            options={{ headerShown: false }}
-            component={OnboardingScreen}
-          />
-          {/* login screen */}
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{ headerLeftContainerStyle: { opacity: 0 } }}
-          />
-          {/* signup screen */}
-          <Stack.Screen
-            name="Signup"
-            component={SignupScreen}
-            options={{ headerLeftContainerStyle: { opacity: 0 } }}
-          />
+        <Stack.Navigator>
+          {token ? null : (
+            <>
+              <Stack.Screen
+                name="Onboarding"
+                options={{ headerShown: false }}
+                component={OnboardingScreen}
+              />
+              {/* login screen */}
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{ headerLeftContainerStyle: { opacity: 0 } }}
+              />
+              {/* signup screen */}
+              <Stack.Screen
+                name="Signup"
+                component={SignupScreen}
+                options={{ headerLeftContainerStyle: { opacity: 0 } }}
+              />
+            </>
+          )}
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen
             name="ProductDetail"
