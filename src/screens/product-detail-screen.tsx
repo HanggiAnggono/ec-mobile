@@ -1,8 +1,7 @@
 import { BottomSheet } from '@/components/bottom-sheet'
 import { Button } from '@/components/button'
-import { useAddToCart } from '@/module/cart/hook/use-add-to-cart'
-import { useGetProduct } from '@/module/product/hook/use-get-product'
 import { formatCurrency } from '@/module/utils'
+import { useCartAddToCart, useProductsFindOne } from '@/shared/query/api-hooks'
 import { useCart } from '@/store/cart.store'
 import { useRoute } from '@react-navigation/native'
 import clsx from 'clsx'
@@ -18,11 +17,11 @@ import {
 
 export const ProductDetailPage = () => {
   const { params = {} } = useRoute()
-  const { id } = params as { id: number }
-  const { data, isLoading } = useGetProduct(id)
+  const { id } = params as { id: string }
+  const { data, isLoading } = useProductsFindOne({ params: { path: { id } } })
   const [isOpen, setIsOpen] = useState(false)
   const { cartSessionId, setCartSessionId } = useCart()
-  const { mutateAsync: addToCart, isPending, error } = useAddToCart()
+  const { mutateAsync: addToCart, isPending, error } = useCartAddToCart()
 
   const variants = data?.variants || []
   const [variantId, setVariantId] = useState(variants?.[0]?.id || 0)
@@ -170,4 +169,3 @@ export const ProductDetailPage = () => {
     </View>
   )
 }
-

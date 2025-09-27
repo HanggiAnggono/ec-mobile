@@ -1,12 +1,12 @@
 import { Button } from '@/components/button'
-import { useCheckoutCart } from '@/module/cart/hook/use-checkout-cart'
 import { useGetCart } from '@/module/cart/hook/use-get-cart'
+import { useCartCheckoutCart } from '@/shared/query/api-hooks'
 import { CartItem } from '@/shared/types/api'
 import { FlatList, Text, View, Image } from 'react-native'
 
 export const CartScreen = () => {
   const { data: cart } = useGetCart()
-  const { mutateAsync: checkout } = useCheckoutCart()
+  const { mutateAsync: checkout } = useCartCheckoutCart()
 
   const items = cart?.items || []
 

@@ -1,14 +1,14 @@
 import { Button } from '@/components/button'
 import { CartContainer } from '@/containers/cart'
-import { useGetProducts } from '@/module/product/hook/use-get-products'
 import { useProductsFindAll } from '@/shared/query/api-hooks'
+import { Product } from '@/shared/types/api'
 import { AntDesign } from '@expo/vector-icons'
 import { Link, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { StackNavigationOptions } from '@react-navigation/stack'
 import { useCallback } from 'react'
 import { FlatList, ImageBackground, Text, View } from 'react-native'
 
-type product = NonNullable<ReturnType<typeof useGetProducts>['data']>[number]
+type product = Product
 
 export const HomeScreen = () => {
   const {

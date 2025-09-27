@@ -1,11 +1,11 @@
-import { apiClient } from '@/module/core'
+import { useCartGetCart } from '@/shared/query/api-hooks'
 import { useCart } from '@/store/cart.store'
 import { useEffect } from 'react'
 
 export const useGetCart = () => {
   const { cartSessionId, setCartSessionId } = useCart()
 
-  const query = apiClient.useQuery('get', '/cart', {
+  const query = useCartGetCart({
     params: { query: { sessionId: getSessionId() } },
   })
 

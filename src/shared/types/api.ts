@@ -148,6 +148,38 @@ export interface paths {
         patch: operations["UserController_update"];
         trace?: never;
     };
+    "/auth/signup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["AuthController_signup"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["AuthController_login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/order": {
         parameters: {
             query?: never;
@@ -254,38 +286,6 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["CartController_checkoutCart"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/signup": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["AuthController_signup"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["AuthController_login"];
         delete?: never;
         options?: never;
         head?: never;
@@ -435,6 +435,31 @@ export interface components {
             paymentId: number;
         };
         UpdateUserDto: Record<string, never>;
+        SignupDto: {
+            username: string;
+            firstname: string;
+            lastname: string;
+            /** Format: email */
+            email: string;
+            password: string;
+        };
+        SignupResponseDto: {
+            id: number;
+            username: string;
+            firstname: string;
+            lastname: string;
+            email: string;
+            password: string;
+        };
+        LoginDto: {
+            username: string;
+            password: string;
+        };
+        LoginResponseDto: {
+            token: string;
+            refreshToken: string;
+            user: components["schemas"]["SignupResponseDto"];
+        };
         CreateOrderDto: {
             /** @description The ID of the user placing the order */
             userId: number;
@@ -473,31 +498,6 @@ export interface components {
             quantity: number;
         };
         DeleteCartDto: Record<string, never>;
-        SignupDto: {
-            username: string;
-            firstname: string;
-            lastname: string;
-            /** Format: email */
-            email: string;
-            password: string;
-        };
-        SignupResponseDto: {
-            id: number;
-            username: string;
-            firstname: string;
-            lastname: string;
-            email: string;
-            password: string;
-        };
-        LoginDto: {
-            username: string;
-            password: string;
-        };
-        LoginResponseDto: {
-            token: string;
-            refreshToken: string;
-            user: components["schemas"]["SignupResponseDto"];
-        };
     };
     responses: never;
     parameters: never;
@@ -522,6 +522,10 @@ export type OrderItem = components['schemas']['OrderItem'];
 export type Payment = components['schemas']['Payment'];
 export type Order = components['schemas']['Order'];
 export type UpdateUserDto = components['schemas']['UpdateUserDto'];
+export type SignupDto = components['schemas']['SignupDto'];
+export type SignupResponseDto = components['schemas']['SignupResponseDto'];
+export type LoginDto = components['schemas']['LoginDto'];
+export type LoginResponseDto = components['schemas']['LoginResponseDto'];
 export type CreateOrderDto = components['schemas']['CreateOrderDto'];
 export type UpdateOrderDto = components['schemas']['UpdateOrderDto'];
 export type Cart = components['schemas']['Cart'];
@@ -529,10 +533,6 @@ export type CartItem = components['schemas']['CartItem'];
 export type AddToCartDto = components['schemas']['AddToCartDto'];
 export type UpdateCartItemDto = components['schemas']['UpdateCartItemDto'];
 export type DeleteCartDto = components['schemas']['DeleteCartDto'];
-export type SignupDto = components['schemas']['SignupDto'];
-export type SignupResponseDto = components['schemas']['SignupResponseDto'];
-export type LoginDto = components['schemas']['LoginDto'];
-export type LoginResponseDto = components['schemas']['LoginResponseDto'];
 export type $defs = Record<string, never>;
 export interface operations {
     AppController_getHello: {
@@ -942,6 +942,70 @@ export interface operations {
             };
         };
     };
+    AuthController_signup: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignupDto"];
+            };
+        };
+        responses: {
+            /** @description User signup */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignupResponseDto"];
+                };
+            };
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignupResponseDto"];
+                };
+            };
+        };
+    };
+    AuthController_login: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginDto"];
+            };
+        };
+        responses: {
+            /** @description User login */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LoginResponseDto"];
+                };
+            };
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LoginResponseDto"];
+                };
+            };
+        };
+    };
     OrderController_findAll: {
         parameters: {
             query?: never;
@@ -1214,70 +1278,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Cart"];
-                };
-            };
-        };
-    };
-    AuthController_signup: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["SignupDto"];
-            };
-        };
-        responses: {
-            /** @description User signup */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SignupResponseDto"];
-                };
-            };
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SignupResponseDto"];
-                };
-            };
-        };
-    };
-    AuthController_login: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LoginDto"];
-            };
-        };
-        responses: {
-            /** @description User login */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LoginResponseDto"];
-                };
-            };
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LoginResponseDto"];
                 };
             };
         };

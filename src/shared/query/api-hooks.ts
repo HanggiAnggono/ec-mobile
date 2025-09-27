@@ -3,148 +3,176 @@
 
 import { apiClient } from '@/module/core'
 import type { operations } from '@/shared/types/api'
+import { FetchOptions } from "openapi-fetch"
 import { OpenapiQueryClient } from "openapi-react-query"
 
-export const useAppGetHello = () => {
-    return apiClient.useQuery('get', '/' as const)
+export const useAppGetHello = (fetchOptions?: FetchOptions<operations['AppController_getHello']>) => {
+    return apiClient.useQuery('get', '/' as const, fetchOptions)
   }
 
-export const useProductsFindAll = () => {
-    return apiClient.useQuery('get', '/products' as const)
+export const useProductsFindAll = (fetchOptions?: FetchOptions<operations['ProductsController_findAll']>) => {
+    return apiClient.useQuery('get', '/products' as const, fetchOptions)
   }
 
-export const useProductsCreate = () => {
-    return apiClient.useMutation('post', '/products' as const)
+export const useProductsCreate = (options?: Parameters<OpenapiQueryClient<'post', '/products'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('post', '/products' as const, options)
   }
 
 export const useProductsFindOne = (
-        params: operations['ProductsController_findOne']['parameters'],
-        options: Parameters<OpenapiQueryClient<'get', '/products/{id}'>['useQuery']>['2']
+        fetchOptions?: FetchOptions<operations['ProductsController_findOne']>,
+        options?: Parameters<OpenapiQueryClient<'get', '/products/{id}'>['useQuery']>['3']
       ) => {
-    return apiClient.useQuery('get', '/products/{id}' as const, {params}, options)
+    // @ts-ignore
+    return apiClient.useQuery('get', '/products/{id}' as const, fetchOptions, options)
   }
 
-export const useProductsRemove = () => {
-    return apiClient.useMutation('delete', '/products/{id}' as const)
+export const useProductsRemove = (options?: Parameters<OpenapiQueryClient<'delete', '/products/{id}'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('delete', '/products/{id}' as const, options)
   }
 
-export const useProductsUpdate = () => {
-    return apiClient.useMutation('patch', '/products/{id}' as const)
+export const useProductsUpdate = (options?: Parameters<OpenapiQueryClient<'patch', '/products/{id}'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('patch', '/products/{id}' as const, options)
   }
 
-export const useProductsAddVariant = () => {
-    return apiClient.useMutation('post', '/products/{id}/variants' as const)
+export const useProductsAddVariant = (options?: Parameters<OpenapiQueryClient<'post', '/products/{id}/variants'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('post', '/products/{id}/variants' as const, options)
   }
 
-export const useProductsUpdateVariant = () => {
-    return apiClient.useMutation('put', '/products/variants/{variantId}' as const)
+export const useProductsUpdateVariant = (options?: Parameters<OpenapiQueryClient<'put', '/products/variants/{variantId}'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('put', '/products/variants/{variantId}' as const, options)
   }
 
-export const useProductCategoryFindAll = () => {
-    return apiClient.useQuery('get', '/product-category' as const)
+export const useProductCategoryFindAll = (fetchOptions?: FetchOptions<operations['ProductCategoryController_findAll']>) => {
+    return apiClient.useQuery('get', '/product-category' as const, fetchOptions)
   }
 
-export const useProductCategoryCreate = () => {
-    return apiClient.useMutation('post', '/product-category' as const)
+export const useProductCategoryCreate = (options?: Parameters<OpenapiQueryClient<'post', '/product-category'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('post', '/product-category' as const, options)
   }
 
 export const useProductCategoryFindOne = (
-        params: operations['ProductCategoryController_findOne']['parameters'],
-        options: Parameters<OpenapiQueryClient<'get', '/product-category/{id}'>['useQuery']>['2']
+        fetchOptions?: FetchOptions<operations['ProductCategoryController_findOne']>,
+        options?: Parameters<OpenapiQueryClient<'get', '/product-category/{id}'>['useQuery']>['3']
       ) => {
-    return apiClient.useQuery('get', '/product-category/{id}' as const, {params}, options)
+    // @ts-ignore
+    return apiClient.useQuery('get', '/product-category/{id}' as const, fetchOptions, options)
   }
 
-export const useProductCategoryRemove = () => {
-    return apiClient.useMutation('delete', '/product-category/{id}' as const)
+export const useProductCategoryRemove = (options?: Parameters<OpenapiQueryClient<'delete', '/product-category/{id}'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('delete', '/product-category/{id}' as const, options)
   }
 
-export const useProductCategoryUpdate = () => {
-    return apiClient.useMutation('patch', '/product-category/{id}' as const)
+export const useProductCategoryUpdate = (options?: Parameters<OpenapiQueryClient<'patch', '/product-category/{id}'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('patch', '/product-category/{id}' as const, options)
   }
 
-export const useUserFindAll = () => {
-    return apiClient.useQuery('get', '/user' as const)
+export const useUserFindAll = (fetchOptions?: FetchOptions<operations['UserController_findAll']>) => {
+    return apiClient.useQuery('get', '/user' as const, fetchOptions)
   }
 
-export const useUserCreate = () => {
-    return apiClient.useMutation('post', '/user' as const)
+export const useUserCreate = (options?: Parameters<OpenapiQueryClient<'post', '/user'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('post', '/user' as const, options)
   }
 
 export const useUserFindOne = (
-        params: operations['UserController_findOne']['parameters'],
-        options: Parameters<OpenapiQueryClient<'get', '/user/{id}'>['useQuery']>['2']
+        fetchOptions?: FetchOptions<operations['UserController_findOne']>,
+        options?: Parameters<OpenapiQueryClient<'get', '/user/{id}'>['useQuery']>['3']
       ) => {
-    return apiClient.useQuery('get', '/user/{id}' as const, {params}, options)
+    // @ts-ignore
+    return apiClient.useQuery('get', '/user/{id}' as const, fetchOptions, options)
   }
 
-export const useUserRemove = () => {
-    return apiClient.useMutation('delete', '/user/{id}' as const)
+export const useUserRemove = (options?: Parameters<OpenapiQueryClient<'delete', '/user/{id}'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('delete', '/user/{id}' as const, options)
   }
 
-export const useUserUpdate = () => {
-    return apiClient.useMutation('patch', '/user/{id}' as const)
+export const useUserUpdate = (options?: Parameters<OpenapiQueryClient<'patch', '/user/{id}'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('patch', '/user/{id}' as const, options)
   }
 
-export const useOrderFindAll = () => {
-    return apiClient.useQuery('get', '/order' as const)
+export const useAuthSignup = (options?: Parameters<OpenapiQueryClient<'post', '/auth/signup'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('post', '/auth/signup' as const, options)
   }
 
-export const useOrderCreate = () => {
-    return apiClient.useMutation('post', '/order' as const)
+export const useAuthLogin = (options?: Parameters<OpenapiQueryClient<'post', '/auth/login'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('post', '/auth/login' as const, options)
+  }
+
+export const useOrderFindAll = (fetchOptions?: FetchOptions<operations['OrderController_findAll']>) => {
+    return apiClient.useQuery('get', '/order' as const, fetchOptions)
+  }
+
+export const useOrderCreate = (options?: Parameters<OpenapiQueryClient<'post', '/order'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('post', '/order' as const, options)
   }
 
 export const useOrderFindOne = (
-        params: operations['OrderController_findOne']['parameters'],
-        options: Parameters<OpenapiQueryClient<'get', '/order/{id}'>['useQuery']>['2']
+        fetchOptions?: FetchOptions<operations['OrderController_findOne']>,
+        options?: Parameters<OpenapiQueryClient<'get', '/order/{id}'>['useQuery']>['3']
       ) => {
-    return apiClient.useQuery('get', '/order/{id}' as const, {params}, options)
+    // @ts-ignore
+    return apiClient.useQuery('get', '/order/{id}' as const, fetchOptions, options)
   }
 
-export const useOrderRemove = () => {
-    return apiClient.useMutation('delete', '/order/{id}' as const)
+export const useOrderRemove = (options?: Parameters<OpenapiQueryClient<'delete', '/order/{id}'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('delete', '/order/{id}' as const, options)
   }
 
-export const useOrderUpdate = () => {
-    return apiClient.useMutation('patch', '/order/{id}' as const)
+export const useOrderUpdate = (options?: Parameters<OpenapiQueryClient<'patch', '/order/{id}'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('patch', '/order/{id}' as const, options)
   }
 
-export const useCartGetCart = () => {
-    return apiClient.useQuery('get', '/cart' as const)
+export const useCartGetCart = (fetchOptions?: FetchOptions<operations['CartController_getCart']>) => {
+    return apiClient.useQuery('get', '/cart' as const, fetchOptions)
   }
 
-export const useCartClearCart = () => {
-    return apiClient.useMutation('delete', '/cart' as const)
+export const useCartClearCart = (options?: Parameters<OpenapiQueryClient<'delete', '/cart'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('delete', '/cart' as const, options)
   }
 
-export const useCartAddToCart = () => {
-    return apiClient.useMutation('post', '/cart/items' as const)
+export const useCartAddToCart = (options?: Parameters<OpenapiQueryClient<'post', '/cart/items'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('post', '/cart/items' as const, options)
   }
 
-export const useCartRemoveCartItem = () => {
-    return apiClient.useMutation('delete', '/cart/items/{id}' as const)
+export const useCartRemoveCartItem = (options?: Parameters<OpenapiQueryClient<'delete', '/cart/items/{id}'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('delete', '/cart/items/{id}' as const, options)
   }
 
-export const useCartUpdateCartItem = () => {
-    return apiClient.useMutation('patch', '/cart/items/{id}' as const)
+export const useCartUpdateCartItem = (options?: Parameters<OpenapiQueryClient<'patch', '/cart/items/{id}'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('patch', '/cart/items/{id}' as const, options)
   }
 
-export const useCartMergeGuestCart = () => {
-    return apiClient.useMutation('post', '/cart/merge' as const)
+export const useCartMergeGuestCart = (options?: Parameters<OpenapiQueryClient<'post', '/cart/merge'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('post', '/cart/merge' as const, options)
   }
 
-export const useCartCheckoutCart = () => {
-    return apiClient.useMutation('post', '/cart/{sessionId}/checkout' as const)
+export const useCartCheckoutCart = (options?: Parameters<OpenapiQueryClient<'post', '/cart/{sessionId}/checkout'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('post', '/cart/{sessionId}/checkout' as const, options)
   }
 
-export const useAuthSignup = () => {
-    return apiClient.useMutation('post', '/auth/signup' as const)
-  }
-
-export const useAuthLogin = () => {
-    return apiClient.useMutation('post', '/auth/login' as const)
-  }
-
-export const usePaymentCreatePayment = () => {
-    return apiClient.useMutation('post', '/payment' as const)
+export const usePaymentCreatePayment = (options?: Parameters<OpenapiQueryClient<'post', '/payment'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('post', '/payment' as const, options)
   }

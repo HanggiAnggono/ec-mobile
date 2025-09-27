@@ -164,6 +164,7 @@ class OpenAPIReactQueryCodegen {
 
 import { apiClient } from '@/module/core'
 import type { operations } from '@/shared/types/api'
+import { FetchOptions } from "openapi-fetch"
 import { OpenapiQueryClient } from "openapi-react-query"
 
 `
@@ -218,14 +219,15 @@ import { OpenapiQueryClient } from "openapi-react-query"
         .join(', ')
 
       return `export const ${hookName} = (
-        params: operations['${endpoint.operationId}']['parameters'],
-        options: Parameters<OpenapiQueryClient<'${endpoint.method}', '${endpoint.path}'>['useQuery']>['2']
+        fetchOptions?: FetchOptions<operations['${endpoint.operationId}']>,
+        options?: Parameters<OpenapiQueryClient<'${endpoint.method}', '${endpoint.path}'>['useQuery']>['3']
       ) => {
-    return apiClient.useQuery('${endpoint.method}', '${endpoint.path}' as const, {params}, options)
+    // @ts-ignore
+    return apiClient.useQuery('${endpoint.method}', '${endpoint.path}' as const, fetchOptions, options)
   }`
     } else {
-      return `export const ${hookName} = () => {
-    return apiClient.useQuery('${endpoint.method}', '${endpoint.path}' as const)
+      return `export const ${hookName} = (fetchOptions?: FetchOptions<operations['${endpoint.operationId}']>) => {
+    return apiClient.useQuery('${endpoint.method}', '${endpoint.path}' as const, fetchOptions)
   }`
     }
   }
@@ -237,23 +239,29 @@ import { OpenapiQueryClient } from "openapi-react-query"
   ): string {
     const requestBodyType = endpoint.requestBodyType
 
+    const params = `options?: Parameters<OpenapiQueryClient<'${endpoint.method}', '${endpoint.path}'>['useMutation']>['2']`
+
     if (endpoint.hasPathParams && requestBodyType) {
       const paramType = this.extractPathParamTypes(endpoint.path)
-      return `export const ${hookName} = () => {
-    return apiClient.useMutation('${endpoint.method}', '${endpoint.path}' as const)
+      return `export const ${hookName} = (${params}) => {
+      // @ts-ignore
+    return apiClient.useMutation('${endpoint.method}', '${endpoint.path}' as const, options)
   }`
     } else if (endpoint.hasPathParams) {
       const paramType = this.extractPathParamTypes(endpoint.path)
-      return `export const ${hookName} = () => {
-    return apiClient.useMutation('${endpoint.method}', '${endpoint.path}' as const)
+      return `export const ${hookName} = (${params}) => {
+      // @ts-ignore
+    return apiClient.useMutation('${endpoint.method}', '${endpoint.path}' as const, options)
   }`
     } else if (requestBodyType) {
-      return `export const ${hookName} = () => {
-    return apiClient.useMutation('${endpoint.method}', '${endpoint.path}' as const)
+      return `export const ${hookName} = (${params}) => {
+      // @ts-ignore
+    return apiClient.useMutation('${endpoint.method}', '${endpoint.path}' as const, options)
   }`
     } else {
-      return `export const ${hookName} = () => {
-    return apiClient.useMutation('${endpoint.method}', '${endpoint.path}' as const)
+      return `export const ${hookName} = (${params}) => {
+      // @ts-ignore
+    return apiClient.useMutation('${endpoint.method}', '${endpoint.path}' as const, options)
   }`
     }
   }
