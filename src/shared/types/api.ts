@@ -132,6 +132,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/user/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["UserController_getProfile"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/user/{id}": {
         parameters: {
             query?: never;
@@ -174,6 +190,22 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["AuthController_login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/refresh-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["AuthController_refreshToken"];
         delete?: never;
         options?: never;
         head?: never;
@@ -380,6 +412,15 @@ export interface components {
         };
         UpdateProductCategoryDto: Record<string, never>;
         CreateUserDto: Record<string, never>;
+        GetProfileDto: {
+            id: number;
+            username: string;
+            email: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
         User: {
             id: number;
             username: string;
@@ -460,6 +501,10 @@ export interface components {
             refreshToken: string;
             user: components["schemas"]["SignupResponseDto"];
         };
+        RefreshTokenDto: {
+            token: string;
+            refreshToken: string;
+        };
         CreateOrderDto: {
             /** @description The ID of the user placing the order */
             userId: number;
@@ -517,6 +562,7 @@ export type CreateVariantDto = components['schemas']['CreateVariantDto'];
 export type CreateProductCategoryDto = components['schemas']['CreateProductCategoryDto'];
 export type UpdateProductCategoryDto = components['schemas']['UpdateProductCategoryDto'];
 export type CreateUserDto = components['schemas']['CreateUserDto'];
+export type GetProfileDto = components['schemas']['GetProfileDto'];
 export type User = components['schemas']['User'];
 export type OrderItem = components['schemas']['OrderItem'];
 export type Payment = components['schemas']['Payment'];
@@ -526,6 +572,7 @@ export type SignupDto = components['schemas']['SignupDto'];
 export type SignupResponseDto = components['schemas']['SignupResponseDto'];
 export type LoginDto = components['schemas']['LoginDto'];
 export type LoginResponseDto = components['schemas']['LoginResponseDto'];
+export type RefreshTokenDto = components['schemas']['RefreshTokenDto'];
 export type CreateOrderDto = components['schemas']['CreateOrderDto'];
 export type UpdateOrderDto = components['schemas']['UpdateOrderDto'];
 export type Cart = components['schemas']['Cart'];
@@ -879,6 +926,33 @@ export interface operations {
             };
         };
     };
+    UserController_getProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetProfileDto"];
+                };
+            };
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
     UserController_findOne: {
         parameters: {
             query?: never;
@@ -1003,6 +1077,36 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["LoginResponseDto"];
                 };
+            };
+        };
+    };
+    AuthController_refreshToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RefreshTokenDto"];
+            };
+        };
+        responses: {
+            /** @description Refresh token */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LoginResponseDto"];
+                };
+            };
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

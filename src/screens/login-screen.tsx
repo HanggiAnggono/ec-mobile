@@ -27,7 +27,6 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const handleLogin = () => {
     mutateAsync({ body: { username, password } }).then((resp) => {
       setAuthStore(resp)
-      navigation.replace('Home')
     })
   }
 

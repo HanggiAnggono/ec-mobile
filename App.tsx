@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { Button, StyleSheet, Text, View } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { OnboardingScreen } from './src/screens/onboarding-screen'
 import './global.css'
@@ -18,11 +18,39 @@ import { RootStackParamList } from '@/screens'
 import { SignupScreen } from '@/screens/signup-screen'
 import { fetchClient } from '@/module/core'
 import { useAuthStore } from '@/store/auth.store'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { SettingScreen } from '@/screens/setting-screen'
+import Icon from '@/components/icon'
 
 const Stack = createStackNavigator<RootStackParamList>()
+const HomeTab = createBottomTabNavigator()
+
+function HomeNavigator() {
+  const { token } = useAuthStore()
+
+  return (
+    <HomeTab.Navigator>
+      <HomeTab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ color }) => <Icon name="home" color={color} />,
+        }}
+      />
+      <HomeTab.Screen
+        name="Setting"
+        component={SettingScreen}
+        navigationKey={token ? 'user' : 'guest'}
+        options={{
+          tabBarIcon: ({ color }) => <Icon name="setting" color={color} />,
+        }}
+      />
+    </HomeTab.Navigator>
+  )
+}
 
 export default function App() {
-  const { token } = useAuthStore()
+  const { token, refreshToken, setAuthStore } = useAuthStore()
   const [client] = React.useState(
     () =>
       new QueryClient({
@@ -39,6 +67,8 @@ export default function App() {
       })
   )
 
+  console.log({ token })
+
   useEffect(() => {
     if (token) {
       fetchClient.use({
@@ -46,15 +76,43 @@ export default function App() {
           cl.request.headers.set('Authorization', `Bearer ${token}`)
           return cl.request
         },
+        onResponse: (cl) => {
+          if (cl.response.clone().status === 401) {
+            if (token && refreshToken) {
+              fetchClient
+                .POST('/auth/refresh-token', {
+                  body: { token, refreshToken },
+                })
+                .then((res) => {
+                  setAuthStore({
+                    token: res.data?.token,
+                    refreshToken: res.data?.refreshToken,
+                  })
+                  cl.request.headers.set(
+                    'Authorization',
+                    `Bearer ${res.data?.token}`
+                  )
+                  return fetch(cl.request)
+                })
+                .catch((err) => {
+                  console.log('Unauthorized! Logging out...')
+                  setAuthStore({ token: undefined, refreshToken: undefined })
+                })
+            } else {
+              console.log('Unauthorized! Logging out...')
+              setAuthStore({ token: undefined, refreshToken: undefined })
+            }
+          }
+        },
       })
     }
-  }, [token, fetchClient])
+  }, [token, refreshToken, fetchClient])
 
   return (
     <QueryClientProvider client={client}>
       <NavigationContainer>
-        <Stack.Navigator>
-          {token ? null : (
+        <Stack.Navigator key={token ? 'user' : 'guest'}>
+          {!token ? (
             <>
               <Stack.Screen
                 name="Onboarding"
@@ -74,18 +132,26 @@ export default function App() {
                 options={{ headerLeftContainerStyle: { opacity: 0 } }}
               />
             </>
+          ) : (
+            <>
+              <Stack.Screen
+                name="HomeTab"
+                component={HomeNavigator}
+                navigationKey={token ? 'user' : 'guest'}
+                options={{ title: '', headerShown: false }}
+              />
+              <Stack.Screen
+                name="ProductDetail"
+                options={{ title: 'Product Detail' }}
+                component={ProductDetailPage}
+              />
+              <Stack.Screen
+                name="Cart"
+                options={{ title: 'Your Cart' }}
+                component={CartScreen}
+              />
+            </>
           )}
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen
-            name="ProductDetail"
-            options={{ title: 'Product Detail' }}
-            component={ProductDetailPage}
-          />
-          <Stack.Screen
-            name="Cart"
-            options={{ title: 'Your Cart' }}
-            component={CartScreen}
-          />
         </Stack.Navigator>
       </NavigationContainer>
     </QueryClientProvider>

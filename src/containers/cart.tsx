@@ -1,5 +1,5 @@
+import Icon from '@/components/icon'
 import { useGetCart } from '@/module/cart/hook/use-get-cart'
-import { AntDesign } from '@expo/vector-icons'
 import { Link, useFocusEffect } from '@react-navigation/native'
 import { useCallback } from 'react'
 import { Text, View } from 'react-native'
@@ -26,7 +26,7 @@ export const CartContainer = () => {
             <Text className="text-xs">{cart?.items?.length}</Text>
           </View>
         ) : null}
-        <AntDesign name="shopping-cart" size={24} />
+        <Icon name="shopping-cart" size={24} />
       </View>
     </Link>
   )

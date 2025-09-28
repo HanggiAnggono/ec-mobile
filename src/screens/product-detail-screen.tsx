@@ -3,7 +3,7 @@ import { Button } from '@/components/button'
 import { formatCurrency } from '@/module/utils'
 import { useCartAddToCart, useProductsFindOne } from '@/shared/query/api-hooks'
 import { useCart } from '@/store/cart.store'
-import { useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import {
@@ -17,6 +17,7 @@ import {
 
 export const ProductDetailPage = () => {
   const { params = {} } = useRoute()
+  const { setOptions } = useNavigation()
   const { id } = params as { id: string }
   const { data, isLoading } = useProductsFindOne({ params: { path: { id } } })
   const [isOpen, setIsOpen] = useState(false)
@@ -32,6 +33,7 @@ export const ProductDetailPage = () => {
     if (variants?.length) {
       setVariantId(variants[0].id)
     }
+    setOptions({ title: data?.name })
   }, [variants])
 
   function handleAddToCart() {

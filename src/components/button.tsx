@@ -1,10 +1,10 @@
-import { AntDesign } from '@expo/vector-icons'
 import clsx from 'clsx'
 import { ComponentProps, ReactNode } from 'react'
 import { Pressable, PressableProps, Text, View } from 'react-native'
+import Icon from './icon'
 
 interface Props extends PressableProps {
-  icon?: ComponentProps<typeof AntDesign>['name']
+  icon?: ComponentProps<typeof Icon>['name']
 }
 
 export const Button = ({
@@ -26,14 +26,14 @@ export const Button = ({
         return (
           <View
             className={clsx(
-              'flex flex-row items-center gap-2 p-3 py-2 overflow-hidden rounded-full',
+              'flex self-start flex-row items-center gap-2 p-3 py-2 overflow-hidden rounded-full',
               {
                 'bg-blue-500': pressed,
               }
             )}
           >
             {icon && (
-              <AntDesign
+              <Icon
                 name={icon}
                 size={20}
                 // className={pressed ? 'text-white' : 'text-blue-500'}

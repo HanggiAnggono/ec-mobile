@@ -83,6 +83,10 @@ export const useUserCreate = (options?: Parameters<OpenapiQueryClient<'post', '/
     return apiClient.useMutation('post', '/user' as const, options)
   }
 
+export const useUserGetProfile = (fetchOptions?: FetchOptions<operations['UserController_getProfile']>) => {
+    return apiClient.useQuery('get', '/user/profile' as const, fetchOptions)
+  }
+
 export const useUserFindOne = (
         fetchOptions?: FetchOptions<operations['UserController_findOne']>,
         options?: Parameters<OpenapiQueryClient<'get', '/user/{id}'>['useQuery']>['3']
@@ -109,6 +113,11 @@ export const useAuthSignup = (options?: Parameters<OpenapiQueryClient<'post', '/
 export const useAuthLogin = (options?: Parameters<OpenapiQueryClient<'post', '/auth/login'>['useMutation']>['2']) => {
       // @ts-ignore
     return apiClient.useMutation('post', '/auth/login' as const, options)
+  }
+
+export const useAuthRefreshToken = (options?: Parameters<OpenapiQueryClient<'post', '/auth/refresh-token'>['useMutation']>['2']) => {
+      // @ts-ignore
+    return apiClient.useMutation('post', '/auth/refresh-token' as const, options)
   }
 
 export const useOrderFindAll = (fetchOptions?: FetchOptions<operations['OrderController_findAll']>) => {
