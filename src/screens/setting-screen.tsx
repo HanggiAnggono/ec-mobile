@@ -3,7 +3,7 @@ import Icon from '@/components/icon'
 import { useUserGetProfile } from '@/shared/query/api-hooks'
 import { useAuthStore } from '@/store/auth.store'
 import { useQueryClient } from '@tanstack/react-query'
-import { Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 
 export const SettingScreen = () => {
   const { data, refetch } = useUserGetProfile()
@@ -30,7 +30,9 @@ export const SettingScreen = () => {
           </View>
         </View>
       </View>
-      <Button onPress={handleLogout}>Logout</Button>
+      <Pressable onPress={handleLogout}>
+        <Text>Logout</Text>
+      </Pressable>
     </View>
   )
 }

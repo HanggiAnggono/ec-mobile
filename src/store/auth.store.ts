@@ -18,3 +18,38 @@ export const useAuthStore = create(
     }
   )
 )
+
+interface AccountStoreItem {
+  username: string
+  token: string
+  refreshToken: string
+}
+
+export const useAccountStore = create(
+  persist(
+    combine(
+      { accounts: {} } as { accounts: Record<string, AccountStoreItem> },
+      (set, get) => {
+        return {
+          addAccount: (account: AccountStoreItem) =>
+            set({
+              accounts: {
+                ...get().accounts,
+                [account.username]: account,
+              },
+            }),
+          removeAccount: (username: string) => {
+            const accounts = get().accounts
+            delete accounts[username]
+            set({ accounts })
+          },
+        }
+      }
+    ),
+    {
+      name: 'account-store',
+      // @ts-ignore
+      storage: zustandStorage,
+    }
+  )
+)

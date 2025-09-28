@@ -37,7 +37,9 @@ export const Button = ({
                 name={icon}
                 size={20}
                 // className={pressed ? 'text-white' : 'text-blue-500'}
-                style={{ color: pressed ? 'white' : '#3B82F6' }}
+                style={{
+                  color: disabled ? 'gray' : pressed ? 'white' : '#3B82F6',
+                }}
               />
             )}
             <Text

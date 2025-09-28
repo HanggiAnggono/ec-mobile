@@ -67,8 +67,6 @@ export default function App() {
       })
   )
 
-  console.log({ token })
-
   useEffect(() => {
     if (token) {
       fetchClient.use({
@@ -77,11 +75,12 @@ export default function App() {
           return cl.request
         },
         onResponse: (cl) => {
-          if (cl.response.clone().status === 401) {
+          const resClone = cl.response.clone()
+          if (resClone.status === 401) {
             if (token && refreshToken) {
               fetchClient
                 .POST('/auth/refresh-token', {
-                  body: { token, refreshToken },
+                  body: { refreshToken },
                 })
                 .then((res) => {
                   setAuthStore({
@@ -92,6 +91,7 @@ export default function App() {
                     'Authorization',
                     `Bearer ${res.data?.token}`
                   )
+                  console.log('retrying')
                   return fetch(cl.request)
                 })
                 .catch((err) => {
@@ -114,11 +114,11 @@ export default function App() {
         <Stack.Navigator key={token ? 'user' : 'guest'}>
           {!token ? (
             <>
-              <Stack.Screen
+              {/* <Stack.Screen
                 name="Onboarding"
                 options={{ headerShown: false }}
                 component={OnboardingScreen}
-              />
+              /> */}
               {/* login screen */}
               <Stack.Screen
                 name="Login"

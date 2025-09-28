@@ -502,7 +502,6 @@ export interface components {
             user: components["schemas"]["SignupResponseDto"];
         };
         RefreshTokenDto: {
-            token: string;
             refreshToken: string;
         };
         CreateOrderDto: {
