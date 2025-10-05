@@ -17,13 +17,6 @@
       "bundleIdentifier": "com.hanggi.ecmobile",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      },
-      "build": {
-        "development": {
-          "ios": {
-            "simulator": true
-          }
-        }
       }
     },
     "android": {
@@ -42,6 +35,8 @@
       "eas": {
         "projectId": "f2e636e7-633d-48ac-a2ff-78c92cc668d3"
       }
-    }
-  }
+    },
+    "sdkVersion": "53.0.0"
+  },
+  "name": "ec-mobile"
 }

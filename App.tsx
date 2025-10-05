@@ -1,26 +1,25 @@
-import React, { useEffect } from 'react'
-import { StatusBar } from 'expo-status-bar'
-import { Button, StyleSheet, Text, View } from 'react-native'
-import { NavigationContainer, useNavigation } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import { OnboardingScreen } from './src/screens/onboarding-screen'
-import './global.css'
+import Icon from '@/components/icon'
+import { fetchFefreshToken } from '@/module/auth/fetch-refresh-token'
+import { fetchClient } from '@/module/core'
+import { RootStackParamList } from '@/screens'
+import { CartScreen } from '@/screens/cart-screen'
 import { HomeScreen } from '@/screens/home-screen'
+import { LoginScreen } from '@/screens/login-screen'
+import { ProductDetailPage } from '@/screens/product-detail-screen'
+import { SettingScreen } from '@/screens/setting-screen'
+import { SignupScreen } from '@/screens/signup-screen'
+import { useAuthStore } from '@/store/auth.store'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 import {
+  MutationCache,
   QueryCache,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
-import { ProductDetailPage } from '@/screens/product-detail-screen'
-import { CartScreen } from '@/screens/cart-screen'
-import { LoginScreen } from '@/screens/login-screen'
-import { RootStackParamList } from '@/screens'
-import { SignupScreen } from '@/screens/signup-screen'
-import { fetchClient } from '@/module/core'
-import { useAuthStore } from '@/store/auth.store'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { SettingScreen } from '@/screens/setting-screen'
-import Icon from '@/components/icon'
+import React, { useEffect } from 'react'
+import './global.css'
 
 const Stack = createStackNavigator<RootStackParamList>()
 const HomeTab = createBottomTabNavigator()
@@ -49,8 +48,31 @@ function HomeNavigator() {
   )
 }
 
+function handleUnauthorized(request, queryClient: QueryClient) {
+  const { refreshToken, setAuthStore } = useAuthStore.getState()
+  fetchFefreshToken({
+    refreshToken,
+    callback: () => queryClient.fetchQuery(request),
+  })
+    .then(({ queues, response }) => {
+      setAuthStore({
+        token: response?.token,
+        refreshToken: response?.refreshToken,
+      })
+
+      queues.forEach((req) => {
+        req()
+      })
+    })
+    .catch((err) => {
+      console.log('Failed to refresh token, logging out...', err)
+      setAuthStore({ token: undefined, refreshToken: undefined })
+      return
+    })
+}
+
 export default function App() {
-  const { token, refreshToken, setAuthStore } = useAuthStore()
+  const { token } = useAuthStore()
   const [client] = React.useState(
     () =>
       new QueryClient({
@@ -61,7 +83,24 @@ export default function App() {
         },
         queryCache: new QueryCache({
           onError: (error, query) => {
-            console.error(`Error in query ${query.queryKey}:`, error)
+            console.error(
+              `[${query.queryKey}] Error in query ${query.queryKey}:`,
+              error
+            )
+            if (error?.statusCode === 401) {
+              handleUnauthorized(query, client)
+            }
+          },
+        }),
+        mutationCache: new MutationCache({
+          onError(error, variables, context, mutation) {
+            console.error(
+              `[${error.name}] Error in mutation ${mutation.options.mutationKey}:`,
+              error
+            )
+            if (error?.statusCode === 401) {
+              handleUnauthorized(mutation, client)
+            }
           },
         }),
       })
@@ -74,39 +113,9 @@ export default function App() {
           cl.request.headers.set('Authorization', `Bearer ${token}`)
           return cl.request
         },
-        onResponse: (cl) => {
-          const resClone = cl.response.clone()
-          if (resClone.status === 401) {
-            if (token && refreshToken) {
-              fetchClient
-                .POST('/auth/refresh-token', {
-                  body: { refreshToken },
-                })
-                .then((res) => {
-                  setAuthStore({
-                    token: res.data?.token,
-                    refreshToken: res.data?.refreshToken,
-                  })
-                  cl.request.headers.set(
-                    'Authorization',
-                    `Bearer ${res.data?.token}`
-                  )
-                  console.log('retrying')
-                  return fetch(cl.request)
-                })
-                .catch((err) => {
-                  console.log('Unauthorized! Logging out...')
-                  setAuthStore({ token: undefined, refreshToken: undefined })
-                })
-            } else {
-              console.log('Unauthorized! Logging out...')
-              setAuthStore({ token: undefined, refreshToken: undefined })
-            }
-          }
-        },
       })
     }
-  }, [token, refreshToken, fetchClient])
+  }, [token, fetchClient])
 
   return (
     <QueryClientProvider client={client}>
