@@ -4,7 +4,8 @@ import React, { useState } from 'react'
 import { Alert, Text, TextInput, View } from 'react-native'
 import { RootStackParamList } from '.'
 import { Button } from '@/components/button'
-import { useAuthLogin, useAuthRefreshToken } from '@/shared/query/api-hooks'
+import { useAuthLogin } from '@/shared/query/auth/use-auth-login.mutation'
+import { useAuthRefreshToken } from '@/shared/query/auth/use-auth-refresh-token.mutation'
 import { BottomSheet } from '@/components/bottom-sheet'
 import { useAccountStore, useAuthStore } from '@/store/auth.store'
 import Icon from '@/components/icon'
@@ -127,7 +128,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
       <BottomSheet isOpen={!!error} setIsOpen={reset}>
         <View className="flex justify-center items-center">
           <Text>Something went wrong</Text>
-          <Text>{String(error?.message)}</Text>
+          <Text>{String((error as any)?.message ?? error)}</Text>
         </View>
       </BottomSheet>
     </View>

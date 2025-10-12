@@ -1,5 +1,5 @@
 import Icon from '@/components/icon'
-import { useGetCart } from '@/module/cart/hook/use-get-cart'
+import { useGetCart } from '@/module/cart/usecases/use-get-cart'
 import { Link, useFocusEffect } from '@react-navigation/native'
 import { useCallback } from 'react'
 import { Text, View } from 'react-native'

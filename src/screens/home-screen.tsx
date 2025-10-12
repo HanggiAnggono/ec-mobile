@@ -1,6 +1,6 @@
 import { Button } from '@/components/button'
 import { CartContainer } from '@/containers/cart'
-import { useProductsFindAll } from '@/shared/query/api-hooks'
+import { useProductsFindAll } from '@/shared/query/products/use-products-find-all.query'
 import { Product } from '@/shared/types/api'
 import { Link, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { StackNavigationOptions } from '@react-navigation/stack'
@@ -10,12 +10,8 @@ import { FlatList, ImageBackground, Text, View } from 'react-native'
 type product = Product
 
 export const HomeScreen = () => {
-  const {
-    data: products = [],
-    isLoading,
-    error,
-    refetch,
-  } = useProductsFindAll()
+  const { data, isLoading, error, refetch } = useProductsFindAll()
+  const products = data?.data || []
 
   const { setOptions } = useNavigation()
 

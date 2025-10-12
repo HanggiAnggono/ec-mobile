@@ -1,6 +1,6 @@
 import { Button } from '@/components/button'
-import { useGetCart } from '@/module/cart/hook/use-get-cart'
-import { useCartCheckoutCart } from '@/shared/query/api-hooks'
+import { useGetCart } from '@/module/cart/usecases/use-get-cart'
+import { useCartCheckoutCart } from '@/shared/query/cart/use-cart-checkout-cart.mutation'
 import { CartItem } from '@/shared/types/api'
 import { FlatList, Text, View, Image } from 'react-native'
 

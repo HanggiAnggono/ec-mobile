@@ -371,17 +371,11 @@ export interface components {
             products: components["schemas"]["Product"][];
         };
         FindAllProductDto: {
-            /** @example 1 */
-            id: number;
-            /** @example Sample Product */
-            name: string;
-            /** @example This is a sample product description. */
-            description: string;
-            category: {
-                id: number;
-                name: string;
-                description: string;
-            };
+            data: unknown[][];
+            totalRecords: number;
+            totalPage: number;
+            page: number;
+            limit: number;
         };
         VariantDto: {
             id: number;
@@ -602,27 +596,22 @@ export interface operations {
     };
     ProductsController_findAll: {
         parameters: {
-            query?: never;
+            query?: {
+                page?: number;
+                take?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FindAllProductDto"][];
-                };
-            };
             default: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Product"][];
+                    "application/json": components["schemas"]["FindAllProductDto"];
                 };
             };
         };

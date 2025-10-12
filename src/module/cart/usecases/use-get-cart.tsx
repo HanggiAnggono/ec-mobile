@@ -1,4 +1,4 @@
-import { useCartGetCart } from '@/shared/query/api-hooks'
+import { useCartGetCart } from '@/shared/query/cart/use-cart-get-cart.query'
 import { useCart } from '@/store/cart.store'
 import { useEffect } from 'react'
 

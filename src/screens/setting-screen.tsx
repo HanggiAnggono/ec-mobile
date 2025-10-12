@@ -1,6 +1,6 @@
 import { Button } from '@/components/button'
 import Icon from '@/components/icon'
-import { useUserGetProfile } from '@/shared/query/api-hooks'
+import { useUserGetProfile } from '@/shared/query/user/use-user-get-profile.query'
 import { useAuthStore } from '@/store/auth.store'
 import { useQueryClient } from '@tanstack/react-query'
 import { Alert, Pressable, Text, TouchableOpacity, View } from 'react-native'
