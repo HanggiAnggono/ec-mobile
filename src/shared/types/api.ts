@@ -370,8 +370,21 @@ export interface components {
             description: string;
             products: components["schemas"]["Product"][];
         };
+        ProductDto: {
+            /** @example 1 */
+            id: number;
+            /** @example Sample Product */
+            name: string;
+            /** @example This is a sample product description. */
+            description: string;
+            category: {
+                id: number;
+                name: string;
+                description: string;
+            };
+        };
         FindAllProductDto: {
-            data: unknown[][];
+            data: components["schemas"]["ProductDto"][];
             totalRecords: number;
             totalPage: number;
             page: number;
@@ -547,6 +560,7 @@ export type CreateProductDto = components['schemas']['CreateProductDto'];
 export type ProductVariant = components['schemas']['ProductVariant'];
 export type Product = components['schemas']['Product'];
 export type ProductCategory = components['schemas']['ProductCategory'];
+export type ProductDto = components['schemas']['ProductDto'];
 export type FindAllProductDto = components['schemas']['FindAllProductDto'];
 export type VariantDto = components['schemas']['VariantDto'];
 export type FindOneProductDto = components['schemas']['FindOneProductDto'];
@@ -606,6 +620,14 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FindAllProductDto"];
+                };
+            };
             default: {
                 headers: {
                     [name: string]: unknown;

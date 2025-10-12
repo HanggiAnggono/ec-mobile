@@ -1,17 +1,27 @@
 import { Button } from '@/components/button'
 import { CartContainer } from '@/containers/cart'
-import { useProductsFindAll } from '@/shared/query/products/use-products-find-all.query'
+import {
+  useProductsFindAll,
+  useProductsFindAllInfinite,
+} from '@/shared/query/products/use-products-find-all.query'
 import { Product } from '@/shared/types/api'
 import { Link, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { StackNavigationOptions } from '@react-navigation/stack'
 import { useCallback } from 'react'
-import { FlatList, ImageBackground, Text, View } from 'react-native'
+import {
+  ActivityIndicator,
+  FlatList,
+  ImageBackground,
+  Text,
+  View,
+} from 'react-native'
 
 type product = Product
 
 export const HomeScreen = () => {
-  const { data, isLoading, error, refetch } = useProductsFindAll()
-  const products = data?.data || []
+  const { data, isLoading, error, refetch, fetchNextPage, isFetchingNextPage } =
+    useProductsFindAllInfinite()
+  const products = data?.pages.flatMap((page) => page.data) || []
 
   const { setOptions } = useNavigation()
 
@@ -56,6 +66,14 @@ export const HomeScreen = () => {
         renderItem={renderProduct}
         className="h-full"
         contentContainerClassName="pb-16"
+        refreshing={isLoading}
+        onEndReachedThreshold={0.2}
+        onEndReached={() => fetchNextPage()}
+        ListFooterComponent={() => {
+          return isFetchingNextPage ? (
+            <ActivityIndicator size="large" className="my-4" />
+          ) : null
+        }}
       />
     </View>
   )
