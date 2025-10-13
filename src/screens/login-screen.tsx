@@ -73,7 +73,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 <Button
                   key={acc.username}
                   className={clsx(
-                    'flex-row gap-2 items-center bg-white p-3 rounded-md mb-3'
+                    'flex-row gap-2 items-center bg-white p-3 rounded-md mb-3 border-gray-400 border w-full'
                   )}
                   icon="user-switch"
                   onPress={handleExistingLogin(acc)}

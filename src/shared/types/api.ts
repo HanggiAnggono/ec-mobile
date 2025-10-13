@@ -499,14 +499,14 @@ export interface components {
             email: string;
             password: string;
         };
-        LoginDto: {
-            username: string;
-            password: string;
-        };
         LoginResponseDto: {
             token: string;
             refreshToken: string;
             user: components["schemas"]["SignupResponseDto"];
+        };
+        LoginDto: {
+            username: string;
+            password: string;
         };
         RefreshTokenDto: {
             refreshToken: string;
@@ -577,8 +577,8 @@ export type Order = components['schemas']['Order'];
 export type UpdateUserDto = components['schemas']['UpdateUserDto'];
 export type SignupDto = components['schemas']['SignupDto'];
 export type SignupResponseDto = components['schemas']['SignupResponseDto'];
-export type LoginDto = components['schemas']['LoginDto'];
 export type LoginResponseDto = components['schemas']['LoginResponseDto'];
+export type LoginDto = components['schemas']['LoginDto'];
 export type RefreshTokenDto = components['schemas']['RefreshTokenDto'];
 export type CreateOrderDto = components['schemas']['CreateOrderDto'];
 export type UpdateOrderDto = components['schemas']['UpdateOrderDto'];
@@ -1045,7 +1045,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SignupResponseDto"];
+                    "application/json": components["schemas"]["LoginResponseDto"];
                 };
             };
             default: {
@@ -1053,7 +1053,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SignupResponseDto"];
+                    "application/json": components["schemas"]["LoginResponseDto"];
                 };
             };
         };
