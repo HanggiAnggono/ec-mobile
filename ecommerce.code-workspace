@@ -1,14 +1,45 @@
 {
-	"folders": [
-		{
-			"path": "../ec-be-core"
-		},
-		{
-			"path": "../ec-fe-admin"
-		},
-		{
-			"path": "."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "../ec-be-core",
+    },
+    {
+      "path": "../ec-fe-admin",
+    },
+    {
+      "path": ".",
+    },
+  ],
+  "settings": {},
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "command": "pnpm expo start --go --ios",
+        "name": "Expo Go iOS",
+        "request": "launch",
+        "type": "node-terminal",
+        "cwd": "${workspaceFolder}/../ec-mobile",
+      },
+      {
+        "type": "node-terminal",
+        "name": "CORE: start:dev",
+        "request": "launch",
+        "command": "pnpm run start:dev",
+        "cwd": "${workspaceFolder}/../ec-be-core",
+      },
+    ],
+    "compounds": [
+      {
+        "name": "EC Start",
+        "configurations": ["CORE: start:dev", "Expo Go iOS"],
+        "stopAll": true,
+        "presentation": {
+          "hidden": false,
+          "group": "ECGROUP",
+          "order": 1,
+        },
+      },
+    ],
+  },
 }
