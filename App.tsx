@@ -21,6 +21,7 @@ import {
 import React, { useEffect } from 'react'
 import './global.css'
 import { CheckoutScreen } from '@/screens/checkout-screen'
+import { PaymentScreen } from '@/screens/payment-screen'
 
 const Stack = createStackNavigator<RootStackParamList>()
 const HomeTab = createBottomTabNavigator()
@@ -164,6 +165,11 @@ export default function App() {
                 name={Routes.Checkout}
                 options={{ title: 'Checkout' }}
                 component={CheckoutScreen}
+              />
+              <Stack.Screen
+                name={Routes.Payment}
+                options={{ title: 'Payment' }}
+                component={PaymentScreen}
               />
             </>
           )}

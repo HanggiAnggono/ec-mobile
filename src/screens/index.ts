@@ -10,6 +10,7 @@ export type RootStackParamList = {
   ProductDetail: { productId: string }
   Cart: undefined
   Checkout: undefined
+  Payment: { orderId?: string }
 }
 
 export type RouteName = keyof RootStackParamList
@@ -26,4 +27,5 @@ export const Routes = new Proxy(
 
 export type StackScreenProp<T extends keyof RootStackParamList> = {
   navigation: StackNavigationProp<RootStackParamList, T>
+  route: { params?: RootStackParamList[T] }
 }

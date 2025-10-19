@@ -461,6 +461,7 @@ export interface components {
             id: number;
             order: components["schemas"]["Order"];
             productVariant: components["schemas"]["ProductVariant"];
+            productVariantId: number;
             quantity: number;
             price: number;
         };
@@ -495,8 +496,7 @@ export interface components {
             totalAmount: number;
             /** @enum {string} */
             order_status: "pending" | "pending_payment" | "payment_received" | "order_confirmed" | "failed" | "expired" | "awaiting_shipment" | "on_hold" | "awaiting_pickup" | "completed" | "cancelled";
-            payment: components["schemas"]["Payment"];
-            paymentId: number;
+            payment: components["schemas"]["Payment"][];
         };
         UpdateUserDto: Record<string, never>;
         SignupDto: {
@@ -530,6 +530,16 @@ export interface components {
         CreateOrderDto: {
             /** @description The ID of the user placing the order */
             userId: number;
+        };
+        FindOneOrderDto: {
+            id: number;
+            /** Format: date-time */
+            orderDate: string;
+            orderItems: components["schemas"]["OrderItem"][];
+            /** @enum {string} */
+            order_status: "pending" | "pending_payment" | "payment_received" | "order_confirmed" | "failed" | "expired" | "awaiting_shipment" | "on_hold" | "awaiting_pickup" | "completed" | "cancelled";
+            payment: components["schemas"]["Payment"][];
+            totalAmount: number;
         };
         UpdateOrderDto: Record<string, never>;
         Cart: {
@@ -604,6 +614,7 @@ export type LoginResponseDto = components['schemas']['LoginResponseDto'];
 export type LoginDto = components['schemas']['LoginDto'];
 export type RefreshTokenDto = components['schemas']['RefreshTokenDto'];
 export type CreateOrderDto = components['schemas']['CreateOrderDto'];
+export type FindOneOrderDto = components['schemas']['FindOneOrderDto'];
 export type UpdateOrderDto = components['schemas']['UpdateOrderDto'];
 export type Cart = components['schemas']['Cart'];
 export type CartItem = components['schemas']['CartItem'];
@@ -1198,12 +1209,20 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FindOneOrderDto"];
+                };
+            };
             default: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Order"];
+                    "application/json": components["schemas"]["FindOneOrderDto"];
                 };
             };
         };

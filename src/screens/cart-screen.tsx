@@ -43,12 +43,24 @@ export const CartScreen = (props: StackScreenProp<'Cart'>) => {
 
   return (
     <View>
-      <FlatList data={items} renderItem={renderItem} className="h-full" />
-      <View className="absolute w-full bottom-0 bg-white p-safe-or-5">
-        <Button icon="arrow-right" onPress={handleCheckout} className="ml-auto">
-          Chekcout
-        </Button>
-      </View>
+      {items.length ? (
+        <>
+          <FlatList data={items} renderItem={renderItem} className="h-full" />
+          <View className="absolute w-full bottom-0 bg-white p-safe-or-5">
+            <Button
+              icon="arrow-right"
+              onPress={handleCheckout}
+              className="ml-auto"
+            >
+              Chekcout
+            </Button>
+          </View>
+        </>
+      ) : (
+        <View className="h-full bg-white items-center justify-center">
+          <Text>There's nothing, go back and add some items</Text>
+        </View>
+      )}
     </View>
   )
 }

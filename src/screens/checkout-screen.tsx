@@ -46,14 +46,25 @@ export const CheckoutScreen: React.FC<StackScreenProp<'Checkout'>> = ({
       body: { paymentMethod: payment },
       params: { path: { sessionId: cart?.sessionId } },
     }).then((resp) => {
-      Alert.alert('Order successful', `Your order ${resp.id} has been placed.`, [
-        {
-          text: 'OK',
-          onPress: () => {
-            navigation.navigate('Home')
+      Alert.alert(
+        'Order successful',
+        `Your order ${resp.id} has been placed.`,
+        [
+          {
+            text: 'Continue to Payment',
+            onPress: () => {
+              navigation.navigate('Payment', { orderId: resp.id.toString() })
+            },
           },
-        },
-      ])
+          {
+            text: 'Back to Home',
+            style: 'cancel',
+            onPress: () => {
+              navigation.navigate('Home')
+            },
+          },
+        ]
+      )
     })
   }
 
