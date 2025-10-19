@@ -1,7 +1,7 @@
 import Icon from '@/components/icon'
 import { fetchFefreshToken } from '@/module/auth/fetch-refresh-token'
 import { fetchClient } from '@/module/core'
-import { RootStackParamList } from '@/screens'
+import { RootStackParamList, Routes } from '@/screens'
 import { CartScreen } from '@/screens/cart-screen'
 import { HomeScreen } from '@/screens/home-screen'
 import { LoginScreen } from '@/screens/login-screen'
@@ -20,6 +20,7 @@ import {
 } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
 import './global.css'
+import { CheckoutScreen } from '@/screens/checkout-screen'
 
 const Stack = createStackNavigator<RootStackParamList>()
 const HomeTab = createBottomTabNavigator()
@@ -30,14 +31,14 @@ function HomeNavigator() {
   return (
     <HomeTab.Navigator>
       <HomeTab.Screen
-        name="Home"
+        name={Routes.Home}
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color }) => <Icon name="home" color={color} />,
         }}
       />
       <HomeTab.Screen
-        name="Setting"
+        name={Routes.Setting}
         component={SettingScreen}
         navigationKey={token ? 'user' : 'guest'}
         options={{
@@ -124,19 +125,19 @@ export default function App() {
           {!token ? (
             <>
               {/* <Stack.Screen
-                name="Onboarding"
+                name={Routes.Onboarding}
                 options={{ headerShown: false }}
                 component={OnboardingScreen}
               /> */}
               {/* login screen */}
               <Stack.Screen
-                name="Login"
+                name={Routes.Login}
                 component={LoginScreen}
                 options={{ headerLeftContainerStyle: { opacity: 0 } }}
               />
               {/* signup screen */}
               <Stack.Screen
-                name="Signup"
+                name={Routes.Signup}
                 component={SignupScreen}
                 options={{ headerLeftContainerStyle: { opacity: 0 } }}
               />
@@ -144,20 +145,25 @@ export default function App() {
           ) : (
             <>
               <Stack.Screen
-                name="HomeTab"
+                name={Routes.HomeTab}
                 component={HomeNavigator}
                 navigationKey={token ? 'user' : 'guest'}
                 options={{ title: '', headerShown: false }}
               />
               <Stack.Screen
-                name="ProductDetail"
+                name={Routes.ProductDetail}
                 options={{ title: 'Product Detail' }}
                 component={ProductDetailPage}
               />
               <Stack.Screen
-                name="Cart"
+                name={Routes.Cart}
                 options={{ title: 'Your Cart' }}
                 component={CartScreen}
+              />
+              <Stack.Screen
+                name={Routes.Checkout}
+                options={{ title: 'Checkout' }}
+                component={CheckoutScreen}
               />
             </>
           )}

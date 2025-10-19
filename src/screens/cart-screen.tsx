@@ -1,19 +1,18 @@
 import { Button } from '@/components/button'
 import { useGetCart } from '@/module/cart/usecases/use-get-cart'
-import { useCartCheckoutCart } from '@/shared/query/cart/use-cart-checkout-cart.mutation'
 import { CartItem } from '@/shared/types/api'
-import { FlatList, Text, View, Image } from 'react-native'
+import { FlatList, Image, Text, View } from 'react-native'
+import { Routes, StackScreenProp } from '.'
 
-export const CartScreen = () => {
+export const CartScreen = (props: StackScreenProp<'Cart'>) => {
   const { data: cart } = useGetCart()
-  const { mutateAsync: checkout } = useCartCheckoutCart()
 
   const items = cart?.items || []
 
   function handleCheckout() {
     if (!cart) return
 
-    checkout({ params: { path: { sessionId: cart.sessionId } } })
+    props.navigation.navigate(Routes.Checkout)
   }
 
   function renderItem({ item }: { item: CartItem }) {
