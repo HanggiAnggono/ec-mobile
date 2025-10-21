@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import { StackScreenProp } from '.'
 import { useOrderFindOne } from '@/shared/query/order/use-order-find-one.query'
+import { Button } from '@/components/button'
 
 export const PaymentScreen: React.FC<StackScreenProp<'Payment'>> = ({
   navigation,
@@ -24,18 +25,18 @@ export const PaymentScreen: React.FC<StackScreenProp<'Payment'>> = ({
 
   const handlePayNow = () => {
     // TODO: Implement actual payment processing
-    navigation.navigate('Home')
+    navigation.navigate('HomeTab')
   }
 
   const handleBackToHome = () => {
-    navigation.navigate('Home')
+    navigation.navigate('HomeTab')
   }
 
-  if (isFetching) {
-    return (
-      <ActivityIndicator className="flex-1 flex self-center justify-self-center" />
-    )
-  }
+  // if (isFetching) {
+  //   return (
+  //     <ActivityIndicator className="flex-1 flex self-center justify-self-center" />
+  //   )
+  // }
 
   if (!orderDetails) {
     return (
@@ -59,7 +60,7 @@ export const PaymentScreen: React.FC<StackScreenProp<'Payment'>> = ({
             #{orderDetails?.id}
           </Text>
           <Text className="text-base text-gray-600">
-            Order Date: {orderDetails?.orderDate}
+            Order Date: {new Date(orderDetails?.orderDate)?.toLocaleString()}
           </Text>
           <View className="mt-3 px-3 py-1 bg-yellow-100 rounded-full self-start">
             <Text className="text-yellow-800 font-medium text-sm">
@@ -86,7 +87,10 @@ export const PaymentScreen: React.FC<StackScreenProp<'Payment'>> = ({
                 />
                 <View className="flex-1">
                   <Text className="font-semibold text-gray-900 mb-1">
-                    {item?.productVariant?.name}
+                    {item?.productVariant?.product?.name}
+                  </Text>
+                  <Text className="text-gray-600 text-sm">
+                    {item.productVariant?.name}
                   </Text>
                   <Text className="text-gray-600 text-sm">
                     Qty: {item.quantity}
@@ -94,7 +98,7 @@ export const PaymentScreen: React.FC<StackScreenProp<'Payment'>> = ({
                 </View>
                 <View className="items-end">
                   <Text className="font-semibold text-gray-900">
-                    ${item.price.toFixed(2)}
+                    {item.price.toFixed(2)}
                   </Text>
                 </View>
               </View>
@@ -115,22 +119,24 @@ export const PaymentScreen: React.FC<StackScreenProp<'Payment'>> = ({
             <View className="flex-row justify-between">
               <Text className="text-gray-600">Subtotal</Text>
               <Text className="text-gray-900">
-                ${(orderDetails.totalAmount - 10).toFixed(2)}
+                {(orderDetails.totalAmount - 10).toFixed(2)}
               </Text>
             </View>
-            <View className="flex-row justify-between">
+            {/* <View className="flex-row justify-between">
               <Text className="text-gray-600">Shipping</Text>
-              <Text className="text-gray-900">$10.00</Text>
-            </View>
+              <Text className="text-gray-900">10.00</Text>
+            </View> */}
             <View className="flex-row justify-between">
               <Text className="text-gray-600">Tax</Text>
-              <Text className="text-gray-900">$0.00</Text>
+              <Text className="text-gray-900">0.00</Text>
             </View>
             <View className="border-t border-gray-200 pt-2 mt-2">
               <View className="flex-row justify-between">
-                <Text className="text-lg font-semibold text-gray-900">Total</Text>
                 <Text className="text-lg font-semibold text-gray-900">
-                  ${orderDetails.totalAmount.toFixed(2)}
+                  Total
+                </Text>
+                <Text className="text-lg font-semibold text-gray-900">
+                  {orderDetails.totalAmount.toFixed(2)}
                 </Text>
               </View>
             </View>
@@ -176,23 +182,11 @@ export const PaymentScreen: React.FC<StackScreenProp<'Payment'>> = ({
 
       {/* Bottom Action Buttons */}
       <View className="bg-white px-4 py-6 border-t border-gray-200 gap-y-3">
-        <TouchableOpacity 
-          className="bg-blue-600 py-4 rounded-lg items-center"
-          onPress={handlePayNow}
-        >
-          <Text className="text-white font-semibold text-base">
-            Pay Now - ${orderDetails.totalAmount.toFixed(2)}
-          </Text>
-        </TouchableOpacity>
+        <Button onPress={handlePayNow} icon="arrow-right" variant="primary">
+          Pay Now - {orderDetails.totalAmount.toFixed(2)}
+        </Button>
 
-        <TouchableOpacity 
-          className="bg-gray-200 py-4 rounded-lg items-center"
-          onPress={handleBackToHome}
-        >
-          <Text className="text-gray-700 font-semibold text-base">
-            Back to Home
-          </Text>
-        </TouchableOpacity>
+        <Button onPress={handleBackToHome}>Back to Home</Button>
       </View>
     </SafeAreaView>
   )

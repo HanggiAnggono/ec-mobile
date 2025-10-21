@@ -39,6 +39,13 @@ function HomeNavigator() {
         }}
       />
       <HomeTab.Screen
+        name={Routes.Orders}
+        component={SettingScreen}
+        options={{
+          tabBarIcon: ({ color }) => <Icon name="ordered-list" color={color} />,
+        }}
+      />
+      <HomeTab.Screen
         name={Routes.Setting}
         component={SettingScreen}
         navigationKey={token ? 'user' : 'guest'}

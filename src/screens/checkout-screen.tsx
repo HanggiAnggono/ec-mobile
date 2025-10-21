@@ -46,25 +46,7 @@ export const CheckoutScreen: React.FC<StackScreenProp<'Checkout'>> = ({
       body: { paymentMethod: payment },
       params: { path: { sessionId: cart?.sessionId } },
     }).then((resp) => {
-      Alert.alert(
-        'Order successful',
-        `Your order ${resp.id} has been placed.`,
-        [
-          {
-            text: 'Continue to Payment',
-            onPress: () => {
-              navigation.navigate('Payment', { orderId: resp.id.toString() })
-            },
-          },
-          {
-            text: 'Back to Home',
-            style: 'cancel',
-            onPress: () => {
-              navigation.navigate('Home')
-            },
-          },
-        ]
-      )
+      navigation.navigate('Payment', { orderId: resp.id.toString() })
     })
   }
 
@@ -134,7 +116,12 @@ export const CheckoutScreen: React.FC<StackScreenProp<'Checkout'>> = ({
         }}
       />
       <View className="absolute w-full bottom-0 bg-white p-safe-or-5">
-        <Button icon="arrow-right" disabled={isCompleting} onPress={handlePurchase} className="ml-auto">
+        <Button
+          icon="arrow-right"
+          disabled={isCompleting}
+          onPress={handlePurchase}
+          className="ml-auto"
+        >
           Purchase
         </Button>
       </View>
