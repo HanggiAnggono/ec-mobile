@@ -16,10 +16,19 @@
   },
   "launch": {
     "version": "0.2.0",
+    "inputs": [
+      {
+        "id": "platform",
+        "description": "Choose platform",
+        "type": "pickString",
+        "default": "ios",
+        "options": ["ios", "android"],
+      },
+    ],
     "configurations": [
       {
-        "command": "pnpm expo start --go --ios",
-        "name": "Expo Go iOS",
+        "command": "pnpm expo start --go --${input:platform}",
+        "name": "Expo Go",
         "request": "launch",
         "type": "node-terminal",
         "cwd": "${workspaceFolder}/../ec-mobile",
@@ -34,8 +43,8 @@
     ],
     "compounds": [
       {
-        "name": "EC Start",
-        "configurations": ["CORE: start:dev", "Expo Go iOS"],
+        "name": "EC Start Dev",
+        "configurations": ["CORE: start:dev", "Expo Go"],
         "stopAll": true,
         "presentation": {
           "hidden": false,

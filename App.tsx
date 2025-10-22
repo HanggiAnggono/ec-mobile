@@ -22,6 +22,7 @@ import React, { useEffect } from 'react'
 import './global.css'
 import { CheckoutScreen } from '@/screens/checkout-screen'
 import { PaymentScreen } from '@/screens/payment-screen'
+import { OrdersScreen } from "@/screens/orders-screen"
 
 const Stack = createStackNavigator<RootStackParamList>()
 const HomeTab = createBottomTabNavigator()
@@ -40,7 +41,7 @@ function HomeNavigator() {
       />
       <HomeTab.Screen
         name={Routes.Orders}
-        component={SettingScreen}
+        component={OrdersScreen}
         options={{
           tabBarIcon: ({ color }) => <Icon name="ordered-list" color={color} />,
         }}
