@@ -316,10 +316,10 @@ import { OpenapiQueryClient } from "openapi-react-query"
     },
     queryFn: ({ pageParam = 1 }) => {
       return fetchClient
-        .GET('/products', {
+        .GET('${endpoint.path}', {
           params: { query: { page: Number(pageParam) } },
         })
-        .then((res) => res.data as useProductsFindAllResponse)
+        .then((res) => res.data as ${typeName})
         .catch((err) => {
           throw err
         })

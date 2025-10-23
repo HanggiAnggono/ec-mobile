@@ -17,3 +17,28 @@ export const useOrderFindAll = (
     // @ts-ignore
     return apiClient.useQuery('get', '/order' as const, fetchOptions, options)
   }
+
+export const useOrderFindAllInfinite = (
+        options?: Parameters<typeof useInfiniteQuery<useOrderFindAllResponse>>[0]
+      ) => {
+       return useInfiniteQuery<useOrderFindAllResponse>({
+    queryKey: ['get', '/order'],
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page < lastPage.totalPage) {
+        return lastPage.page + 1
+      }
+    },
+    queryFn: ({ pageParam = 1 }) => {
+      return fetchClient
+        .GET('/order', {
+          params: { query: { page: Number(pageParam) } },
+        })
+        .then((res) => res.data as useOrderFindAllResponse)
+        .catch((err) => {
+          throw err
+        })
+    },
+    ...options
+  })
+  }

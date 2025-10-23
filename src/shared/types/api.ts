@@ -531,6 +531,25 @@ export interface components {
             /** @description The ID of the user placing the order */
             userId: number;
         };
+        /** @enum {string} */
+        OrderStatus: "pending" | "pending_payment" | "payment_received" | "order_confirmed" | "failed" | "expired" | "awaiting_shipment" | "on_hold" | "awaiting_pickup" | "completed" | "cancelled";
+        OrderDto: {
+            id: number;
+            user: components["schemas"]["User"];
+            orderItems: components["schemas"]["OrderItem"][];
+            /** Format: date-time */
+            orderDate: string;
+            totalAmount: number;
+            order_status: components["schemas"]["OrderStatus"];
+            payment: components["schemas"]["Payment"][];
+        };
+        FindAllOrderDto: {
+            data: components["schemas"]["OrderDto"][];
+            totalRecords: number;
+            totalPage: number;
+            page: number;
+            limit: number;
+        };
         FindOneOrderDto: {
             id: number;
             /** Format: date-time */
@@ -614,6 +633,9 @@ export type LoginResponseDto = components['schemas']['LoginResponseDto'];
 export type LoginDto = components['schemas']['LoginDto'];
 export type RefreshTokenDto = components['schemas']['RefreshTokenDto'];
 export type CreateOrderDto = components['schemas']['CreateOrderDto'];
+export type OrderStatus = components['schemas']['OrderStatus'];
+export type OrderDto = components['schemas']['OrderDto'];
+export type FindAllOrderDto = components['schemas']['FindAllOrderDto'];
 export type FindOneOrderDto = components['schemas']['FindOneOrderDto'];
 export type UpdateOrderDto = components['schemas']['UpdateOrderDto'];
 export type Cart = components['schemas']['Cart'];
@@ -1158,19 +1180,30 @@ export interface operations {
     };
     OrderController_findAll: {
         parameters: {
-            query?: never;
+            query?: {
+                page?: number;
+                take?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FindAllOrderDto"];
+                };
+            };
             default: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Order"][];
+                    "application/json": components["schemas"]["FindAllOrderDto"];
                 };
             };
         };
