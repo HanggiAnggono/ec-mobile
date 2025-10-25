@@ -5,12 +5,17 @@ import Icon from './icon'
 
 const buttonVariants = {
   primary: {
-    btn: 'bg-blue-500',
-    text: 'text-white',
+    btn: 'bg-primary',
+    text: 'text-surface',
     icon: 'white',
-    pressed: { btn: 'bg-blue-700' },
+    pressed: { btn: 'bg-primary/40', text: '' },
   },
-  default: { btn: '', text: '', icon: '', pressed: { btn: 'bg-blue-500' } },
+  default: {
+    btn: '',
+    text: 'text-text',
+    icon: '',
+    pressed: { btn: 'bg-primary/40', text: 'text-surface' },
+  },
 }
 
 interface Props extends PressableProps {
@@ -50,21 +55,14 @@ export const Button = ({
               <Icon
                 name={icon}
                 size={20}
-                // className={pressed ? 'text-white' : 'text-blue-500'}
-                style={{
-                  color: disabled ? 'gray' : pressed ? 'white' : variant.icon,
-                }}
+                className={pressed ? 'text-white' : 'text-blue-500'}
               />
             )}
             <Text
-              className={clsx(
-                'text-xl text-blue-500',
-                {
-                  'text-white': pressed,
-                  'text-gray-300': disabled,
-                },
-                variant.text
-              )}
+              className={clsx(variant.text, 'text-xl', {
+                [variant.pressed.text]: pressed,
+                'text-gray-300': disabled,
+              })}
             >
               {children as ReactNode}
             </Text>

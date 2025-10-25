@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  --color-background: 243 244 246; /* #F3F4F6 */
+  --color-surface: 255 255 255;    /* #FFFFFF */
+  --color-text: 17 24 39;          /* #111827 */
+  --color-text-secondary: 107 114 128; /* #6B7280 */
+  --color-border: 229 231 235;     /* #E5E7EB */
+}
+
+.dark * {
+  --color-background: 17 24 39;    /* #111827 */
+  --color-surface: 31 41 55;       /* #1F2937 */
+  --color-text: 243 244 246;       /* #F3F4F6 */
+  --color-text-secondary: 156 163 175; /* #9CA3AF */
+  --color-border: 75 85 99;        /* #4B5563 */
+}
+
+@layer base {
+  .Text {
+    @apply text-text;
+  }
+}

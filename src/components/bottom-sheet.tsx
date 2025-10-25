@@ -37,13 +37,13 @@ export const BottomSheet = ({ children, isOpen, setIsOpen }) => {
       />
       <Animatable.View
         ref={sheetRef}
-        className="absolute bottom-0 w-screen bg-white border border-slate-400 pt-2 pb-safe-or-10 rounded-t-2xl z-20"
+        className="absolute bottom-0 w-screen bg-background pt-2 pb-safe-or-10 rounded-t-2xl z-20"
         animation="slideInUp"
         duration={300}
         pointerEvents="auto"
       >
         <View className="flex items-center justify-center">
-          <Pressable className="w-12 h-2 bg-slate-300 rounded-2xl" />
+          <Pressable className="w-12 h-2 bg-slate-500 rounded-2xl" />
         </View>
         <View className="pt-10" />
         {isOpen && children}

@@ -3,6 +3,8 @@ import { useGetCart } from '@/module/cart/usecases/use-get-cart'
 import { CartItem } from '@/shared/types/api'
 import { FlatList, Image, Text, View } from 'react-native'
 import { Routes, StackScreenProp } from '.'
+import { Layout } from '@/layout/layout'
+import Card from '@/components/card'
 
 export const CartScreen = (props: StackScreenProp<'Cart'>) => {
   const { data: cart } = useGetCart()
@@ -17,7 +19,7 @@ export const CartScreen = (props: StackScreenProp<'Cart'>) => {
 
   function renderItem({ item }: { item: CartItem }) {
     return (
-      <View className="bg-white m-2 p-4 rounded-lg shadow">
+      <Card className="m-2 p-4 rounded-lg shadow">
         <View className="flex-row">
           <Image
             source={{
@@ -27,26 +29,26 @@ export const CartScreen = (props: StackScreenProp<'Cart'>) => {
             resizeMode="cover"
           />
           <View className="flex-1">
-            <Text className="font-bold">
+            <Text className="font-bold text-text">
               {item.productVariant.product.name}
             </Text>
-            <Text className="text-gray-500">{item.productVariant.name}</Text>
+            <Text className="text-text">{item.productVariant.name}</Text>
           </View>
           <View className="items-end">
-            <Text className="font-bold">Price: {item.price}</Text>
-            <Text className="text-gray-500">Quantity: {item.quantity}</Text>
+            <Text className="font-bold text-text">Price: {item.price}</Text>
+            <Text className="text-text">Quantity: {item.quantity}</Text>
           </View>
         </View>
-      </View>
+      </Card>
     )
   }
 
   return (
-    <View>
+    <Layout>
       {items.length ? (
         <>
           <FlatList data={items} renderItem={renderItem} className="h-full" />
-          <View className="absolute w-full bottom-0 bg-white p-safe-or-5">
+          <View className="absolute w-full bottom-0 bg-background p-safe-or-5">
             <Button
               icon="arrow-right"
               onPress={handleCheckout}
@@ -57,10 +59,12 @@ export const CartScreen = (props: StackScreenProp<'Cart'>) => {
           </View>
         </>
       ) : (
-        <View className="h-full bg-white items-center justify-center">
-          <Text>There's nothing, go back and add some items</Text>
+        <View className="h-full bg-background items-center justify-center">
+          <Text className="text-text">
+            There's nothing, go back and add some items
+          </Text>
         </View>
       )}
-    </View>
+    </Layout>
   )
 }

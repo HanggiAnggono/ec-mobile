@@ -1,5 +1,6 @@
 import { BottomSheet } from '@/components/bottom-sheet'
 import { Button } from '@/components/button'
+import { Layout } from '@/layout/layout'
 import { formatCurrency } from '@/module/utils'
 import { useCartAddToCart } from '@/shared/query/cart/use-cart-add-to-cart.mutation'
 import { useProductsFindOne } from '@/shared/query/products/use-products-find-one.query'
@@ -71,34 +72,27 @@ export const ProductDetailPage = () => {
       <Pressable
         className={clsx(
           'rounded-full p-2 px-4 self-start mr-2',
-          selected ? 'bg-blue-500' : 'bg-gray-200'
+          selected ? 'bg-primary' : 'bg-slate-500'
         )}
         onPress={() => setVariantId(item.id)}
       >
-        <Text
-          className={clsx(
-            ' text-sm ',
-            selected ? 'text-white' : 'text-slate-500'
-          )}
-        >
-          {item.name}
-        </Text>
+        <Text className={clsx('text-sm text-surface')}>{item.name}</Text>
       </Pressable>
     )
   }
 
   return (
-    <View className="flex flex-1 bg-white">
+    <Layout className="flex flex-1 bg-background">
       <ScrollView contentContainerClassName="pb-24">
         <ImageBackground
           source={{ uri: `https://picsum.photos/140/140?random=${data?.name}` }}
-          className="w-full h-96 bg-gray-200"
+          className="w-full h-96 bg-surface"
         />
         <View className="p-4">
-          <Text className="p-4 text-2xl text-slate-500 mb-3">{data?.name}</Text>
+          <Text className="p-4 text-2xl text-text mb-3">{data?.name}</Text>
           {data?.category ? (
-            <View className="rounded-full p-2 bg-blue-500 self-start mb-5">
-              <Text className=" text-white text-sm ">
+            <View className="rounded-full p-2 bg-primary self-start mb-5">
+              <Text className="text-surface text-sm ">
                 {data?.category?.name}
               </Text>
             </View>
@@ -110,11 +104,11 @@ export const ProductDetailPage = () => {
             renderItem={renderVariants}
             className="my-5 -mx-4 px-4"
           />
-          <Text className="text-lg text-slate-500">{data?.description}</Text>
+          <Text className="text-lg text-text">{data?.description}</Text>
         </View>
       </ScrollView>
 
-      <View className="absolute bottom-safe-or-20 right-safe-or-5 p-3  bg-white border border-blue-400 rounded-full">
+      <View className="absolute bottom-safe-or-20 right-safe-or-5 p-3  bg-background border border-primary rounded-full">
         <View className="flex flex-row justify-end gap-1">
           <Button icon="message" className="flex items-center justify-center">
             Chat
@@ -128,16 +122,16 @@ export const ProductDetailPage = () => {
           <View className="flex-row gap-2">
             <ImageBackground
               source={{ uri: 'https://picsum.photos/400/400' }}
-              className="size-40 bg-gray-200 rounded-xl overflow-hidden mb-5"
+              className="size-40 bg-surface rounded-xl overflow-hidden mb-5"
             />
             <View>
-              <Text className="text-2xl text-slate-500 mb-3">
+              <Text className="text-2xl text-text mb-3">
                 {selectedVariant?.name}
               </Text>
-              <Text className="text-slate-500 mb-3">
+              <Text className="text-text mb-3">
                 {formatCurrency(selectedVariant?.price)}
               </Text>
-              <Text className="text-slate-500 mb-3">
+              <Text className="text-text mb-3">
                 {selectedVariant?.stock_quantity} Available
               </Text>
             </View>
@@ -148,7 +142,7 @@ export const ProductDetailPage = () => {
             })}
           </View>
           <View className="flex-row items-center mb-10 gap-4">
-            <Text className="text-lg ml-auto">Quantity</Text>
+            <Text className="text-lg text-text ml-auto">Quantity</Text>
             <Button
               onPress={() => setQuantity(quantity - 1)}
               disabled={quantity <= 1}
@@ -156,7 +150,7 @@ export const ProductDetailPage = () => {
               {' '}
               -{' '}
             </Button>
-            <Text>{quantity}</Text>
+            <Text className="text-text">{quantity}</Text>
             <Button onPress={() => setQuantity(quantity + 1)}> + </Button>
           </View>
           <Button
@@ -169,6 +163,6 @@ export const ProductDetailPage = () => {
           </Button>
         </View>
       </BottomSheet>
-    </View>
+    </Layout>
   )
 }

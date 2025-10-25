@@ -22,28 +22,50 @@ import React, { useEffect } from 'react'
 import './global.css'
 import { CheckoutScreen } from '@/screens/checkout-screen'
 import { PaymentScreen } from '@/screens/payment-screen'
-import { OrdersScreen } from "@/screens/orders-screen"
+import { OrdersScreen } from '@/screens/orders-screen'
+import { MainTabBar } from '@/components/main-tab-bar'
+import { useColorScheme } from 'react-native'
 
 const Stack = createStackNavigator<RootStackParamList>()
 const HomeTab = createBottomTabNavigator()
 
 function HomeNavigator() {
   const { token } = useAuthStore()
+  const scheme = useColorScheme()
 
   return (
-    <HomeTab.Navigator>
+    <HomeTab.Navigator
+      tabBar={(p) => MainTabBar(p)}
+      screenOptions={{
+        headerTransparent: false,
+        headerStyle: {
+          backgroundColor: scheme === 'dark' ? '#21ac21' : '#57d657',
+          borderBottomWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+      }}
+    >
       <HomeTab.Screen
         name={Routes.Home}
         component={HomeScreen}
         options={{
-          tabBarIcon: ({ color }) => <Icon name="home" color={color} />,
+          headerTransparent: true,
+          headerStyle: {
+            backgroundColor: 'transparent',
+          },
+          tabBarIcon: ({ color, size, focused }) => (
+            <Icon name="product" color={color} size={size} />
+          ),
         }}
       />
       <HomeTab.Screen
         name={Routes.Orders}
         component={OrdersScreen}
         options={{
-          tabBarIcon: ({ color }) => <Icon name="ordered-list" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="ordered-list" color={color} size={size} />
+          ),
         }}
       />
       <HomeTab.Screen
@@ -51,7 +73,9 @@ function HomeNavigator() {
         component={SettingScreen}
         navigationKey={token ? 'user' : 'guest'}
         options={{
-          tabBarIcon: ({ color }) => <Icon name="setting" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="setting" color={color} size={size} />
+          ),
         }}
       />
     </HomeTab.Navigator>
@@ -83,6 +107,7 @@ function handleUnauthorized(request, queryClient: QueryClient) {
 
 export default function App() {
   const { token } = useAuthStore()
+  const scheme = useColorScheme()
   const [client] = React.useState(
     () =>
       new QueryClient({
@@ -130,7 +155,15 @@ export default function App() {
   return (
     <QueryClientProvider client={client}>
       <NavigationContainer>
-        <Stack.Navigator key={token ? 'user' : 'guest'}>
+        <Stack.Navigator
+          key={token ? 'user' : 'guest'}
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: scheme === 'dark' ? '#21ac21' : '#57d657',
+            },
+            headerTintColor: scheme === 'dark' ? 'white' : 'black',
+          }}
+        >
           {!token ? (
             <>
               {/* <Stack.Screen

@@ -1,5 +1,7 @@
 import { Button } from '@/components/button'
+import Card from '@/components/card'
 import { CartContainer } from '@/containers/cart'
+import { Layout } from '@/layout/layout'
 import {
   useProductsFindAll,
   useProductsFindAllInfinite,
@@ -13,6 +15,7 @@ import {
   FlatList,
   ImageBackground,
   Text,
+  useColorScheme,
   View,
 } from 'react-native'
 
@@ -24,6 +27,7 @@ export const HomeScreen = () => {
   const products = data?.pages.flatMap((page) => page.data) || []
 
   const { setOptions } = useNavigation()
+  const color = useColorScheme()
 
   useFocusEffect(
     useCallback(() => {
@@ -42,7 +46,9 @@ export const HomeScreen = () => {
         params={{ id: product.id }}
         className="w-1/2"
       >
-        <ProductCard product={product} key={product.id} />
+        <View className="p-2 w-full h-[25rem]">
+          <ProductCard product={product} key={product.id} />
+        </View>
       </Link>
     )
   }, [])
@@ -59,13 +65,13 @@ export const HomeScreen = () => {
   }
 
   return (
-    <View>
+    <Layout>
       <FlatList
         numColumns={2}
         data={products}
         renderItem={renderProduct}
         className="h-full"
-        contentContainerClassName="pb-16"
+        contentContainerClassName="pb-16 pt-32"
         refreshing={isLoading}
         onEndReachedThreshold={0.2}
         onEndReached={() => fetchNextPage()}
@@ -75,28 +81,26 @@ export const HomeScreen = () => {
           ) : null
         }}
       />
-    </View>
+    </Layout>
   )
 }
 
 const ProductCard = ({ product }: { product: product }) => {
   return (
-    <View className="p-2 w-full h-[25rem]">
-      <View className="size-full border border-gray-200 bg-white rounded-xl">
-        <View className="h-[15rem] overflow-hidden rounded-t-xl bg-gray-400">
-          <ImageBackground
-            source={{
-              uri: `https://picsum.photos/140/140?random=${product.name}`,
-            }}
-            className="size-full "
-          />
-        </View>
-        <View className="p-2">
-          <Text className="text-lg font-bold">{product.name}</Text>
-          <Text className="text-gray-500">{product.category?.name}</Text>
-          <Text className="text-gray-700 mt-2">{product.description}</Text>
-        </View>
+    <Card className="size-full">
+      <View className="h-[15rem] overflow-hidden rounded-t-xl bg-gray-400">
+        <ImageBackground
+          source={{
+            uri: `https://picsum.photos/140/140?random=${product.name}`,
+          }}
+          className="size-full "
+        />
       </View>
-    </View>
+      <View className="p-2">
+        <Text className="text-lg text-text font-bold">{product.name}</Text>
+        <Text className="text-text">{product.category?.name}</Text>
+        <Text className="text-text mt-2">{product.description}</Text>
+      </View>
+    </Card>
   )
 }

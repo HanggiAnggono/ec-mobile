@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/EC.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/EC.png",
@@ -17,7 +17,8 @@
       "bundleIdentifier": "com.hanggi.ecmobile",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "userInterfaceStyle": "automatic"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,7 +26,8 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.hanggi.ecmobile"
+      "package": "com.hanggi.ecmobile",
+      "userInterfaceStyle": "automatic"
     },
     "web": {
       "favicon": "./assets/EC.png",

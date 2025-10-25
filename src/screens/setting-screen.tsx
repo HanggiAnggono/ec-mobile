@@ -1,5 +1,6 @@
 import { Button } from '@/components/button'
 import Icon from '@/components/icon'
+import { Layout } from '@/layout/layout'
 import { useUserGetProfile } from '@/shared/query/user/use-user-get-profile.query'
 import { useAuthStore } from '@/store/auth.store'
 import { useQueryClient } from '@tanstack/react-query'
@@ -27,8 +28,8 @@ export const SettingScreen = () => {
   }
 
   return (
-    <View className="flex-1 p-4">
-      <View className="bg-white rounded-md p-4">
+    <Layout className="flex-1 p-4">
+      <View className="bg-background rounded-t-md p-4">
         {isError ? (
           <Pressable
             onPress={() => {
@@ -44,22 +45,22 @@ export const SettingScreen = () => {
             <Icon
               name="user"
               size={25}
-              className="border p-3 self-start rounded-full"
+              className="border border-text p-3 self-start color-text rounded-full"
             />
             <View>
-              <Text className="text-lg">{data?.email}</Text>
-              <Text>{data?.username}</Text>
+              <Text className="text-lg text-text">{data?.email}</Text>
+              <Text className="text-text">{data?.username}</Text>
             </View>
           </View>
         )}
       </View>
       <TouchableOpacity
         onPress={handleLogout}
-        className="items-center flex-row justify-between bg-white p-4 border-t border-t-slate-200"
+        className="items-center flex-row justify-between bg-background p-4 border-t border-t-background-400"
       >
-        <Text>Logout</Text>
-        <Icon name="right" size={16} />
+        <Text className="text-text">Logout</Text>
+        <Icon className="color-text" name="right" size={16} />
       </TouchableOpacity>
-    </View>
+    </Layout>
   )
 }
