@@ -5,46 +5,55 @@ import {
   ListRenderItemInfo,
   Text,
   View,
+  FlatList,
 } from 'react-native'
-import { FlatList } from 'react-native-gesture-handler'
+import { Separator } from '@/components/separator'
+import { formatCurrency } from '@/module/utils'
 
 export const OrdersScreen = () => {
   // TODO: handle filters and paging
-  const { data, isPending, isRefetching } = useOrderFindAll()
+  const { data, isPending, isRefetching, refetch } = useOrderFindAll()
   const orders = data?.data || []
 
   function renderItem(item: ListRenderItemInfo<(typeof orders)[0]>) {
     const order = item.item
     return (
       <View className="grid bg-white p-3 rounded-md shadow-gray-400">
-        <View className="flex justify-between">
+        <View className="flex flex-row justify-between">
           <View>
-            <Text>{order.id}</Text>
-            <Text>{new Date(order.orderDate).toLocaleDateString()}</Text>
+            <Text>#{order.id}</Text>
+            <Text className="text-sm text-gray-500">
+              {new Date(order.orderDate).toLocaleDateString()}
+            </Text>
           </View>
-          <Text>{order.order_status}</Text>
+          <Text>{order.order_status?.replace(/_/g, ' ')}</Text>
         </View>
         <View>
-          {order.orderItems.map((item) => {
+          {order.orderItems?.map((item) => {
             return (
               <View
-                className="flex flex-col items-center gap-3 my-2"
+                className="flex flex-row items-start gap-3 my-2"
                 key={item.id}
               >
                 <Image
-                  className="rounded-md size-4"
+                  className="rounded-md size-14"
                   source={{
                     uri: `https://picsum.photos/140/140?random=${item.id}`,
                   }}
                 />
-                <Text>{item.productVariant.name}</Text>
+                <View>
+                  <Text>{item.productVariant?.product?.name}</Text>
+                  <Text className="text-sm text-gray-500">
+                    {item.productVariant?.name}
+                  </Text>
+                </View>
               </View>
             )
           })}
         </View>
-        <View className="mt-4 border-t border-t-gray-600">
+        <View className="mt-4 border-t border-t-gray-300 py-2">
           <Text>Total Amount</Text>
-          <Text>{order.totalAmount}</Text>
+          <Text>{formatCurrency(order.totalAmount)}</Text>
         </View>
       </View>
     )
@@ -61,9 +70,10 @@ export const OrdersScreen = () => {
         <FlatList
           data={orders}
           renderItem={renderItem}
-          contentContainerClassName="px-3 pb-5"
+          contentContainerClassName="px-3 py-5"
           refreshing={isRefetching}
-          refreshControl={<ActivityIndicator size="small" />}
+          onRefresh={refetch}
+          ItemSeparatorComponent={Separator}
         />
       )}
     </View>
