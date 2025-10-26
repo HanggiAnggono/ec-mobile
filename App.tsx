@@ -39,11 +39,12 @@ function HomeNavigator() {
       screenOptions={{
         headerTransparent: false,
         headerStyle: {
-          backgroundColor: scheme === 'dark' ? '#21ac21' : '#57d657',
+          backgroundColor: scheme === 'dark' ? '#126512' : '#57d657',
           borderBottomWidth: 0,
           elevation: 0,
           shadowOpacity: 0,
         },
+        headerTintColor: scheme === 'dark' ? 'white' : 'black',
       }}
     >
       <HomeTab.Screen
@@ -159,7 +160,7 @@ export default function App() {
           key={token ? 'user' : 'guest'}
           screenOptions={{
             headerStyle: {
-              backgroundColor: scheme === 'dark' ? '#21ac21' : '#57d657',
+              backgroundColor: scheme === 'dark' ? '#1a7a1a' : '#57d657',
             },
             headerTintColor: scheme === 'dark' ? 'white' : 'black',
           }}

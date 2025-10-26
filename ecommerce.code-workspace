@@ -32,6 +32,7 @@
         "request": "launch",
         "type": "node-terminal",
         "cwd": "${workspaceFolder}/../ec-mobile",
+        "postDebugTask": "xcrun simctl shutdown all",
       },
       {
         "type": "node-terminal",

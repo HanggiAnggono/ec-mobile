@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#26d713',
+        primary: 'rgb(var(--color-primary) / <alpha-value>)',
         // Adaptive colors using CSS custom properties
         background: 'rgb(var(--color-background) / <alpha-value>)',
         surface: 'rgb(var(--color-surface) / <alpha-value>)',

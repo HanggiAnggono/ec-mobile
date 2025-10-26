@@ -86,7 +86,7 @@ export const OrdersScreen = (props: StackScreenProp<'Orders'>) => {
         <FlatList
           data={orders}
           renderItem={renderItem}
-          contentContainerClassName="pb-32 px-3"
+          contentContainerClassName="pb-32 pt-5 px-3"
           refreshing={isRefetching}
           onRefresh={refetch}
           ItemSeparatorComponent={Separator}
