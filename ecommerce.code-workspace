@@ -9,6 +9,9 @@
     {
       "path": ".",
     },
+    {
+      "path": "../ec-payment",
+    }
   ],
   "settings": {
     "editor.formatOnSave": true,
