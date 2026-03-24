@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 import { StackScreenProp } from '.'
 import { Layout } from '@/layout/layout'
+import { usePaymentCreatePayment } from '@/shared/query/payment/use-payment-create-payment.mutation'
 
 export const PaymentScreen: React.FC<StackScreenProp<'Payment'>> = ({
   navigation,
@@ -23,10 +24,10 @@ export const PaymentScreen: React.FC<StackScreenProp<'Payment'>> = ({
   const { isFetching, data: orderDetails } = useOrderFindOne({
     params: { path: { id: orderId } },
   })
+  const { mutateAsync: createPayment } = usePaymentCreatePayment()
 
   const handlePayNow = () => {
-    // TODO: Implement actual payment processing
-    navigation.navigate('HomeTab')
+    createPayment({})
   }
 
   const handleBackToHome = () => {

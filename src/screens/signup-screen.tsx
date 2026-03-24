@@ -21,6 +21,7 @@ export const SignupScreen: React.FC<Props> = ({ navigation }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [fullname, setFullname] = useState('')
+  const [phone, setPhone] = useState('')
   const { mutateAsync: signup, isPending } = useAuthSignup()
   const { setAuthStore } = useAuthStore()
   const { addAccount } = useAccountStore()
@@ -30,6 +31,7 @@ export const SignupScreen: React.FC<Props> = ({ navigation }) => {
   const handleSignup = async () => {
     if (
       email &&
+      phone &&
       password &&
       fullname &&
       emailRegex.test(email) &&
@@ -42,6 +44,7 @@ export const SignupScreen: React.FC<Props> = ({ navigation }) => {
             username: email,
             password,
             email,
+            phone,
             firstname,
             lastname: lastname.join(' '),
           },
@@ -93,6 +96,13 @@ export const SignupScreen: React.FC<Props> = ({ navigation }) => {
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
+      />
+      <TextInput
+        className="w-full border border-gray-300 rounded p-2 mb-4"
+        placeholder="Phone Number"
+        value={phone}
+        onChangeText={setPhone}
+        keyboardType="phone-pad"
       />
       <TextInput
         className="w-full border border-gray-300 rounded p-2 mb-6"

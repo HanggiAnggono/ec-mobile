@@ -244,6 +244,22 @@ export interface paths {
         patch: operations["OrderController_update"];
         trace?: never;
     };
+    "/payment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PaymentController_createPayment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/cart": {
         parameters: {
             query?: never;
@@ -334,22 +350,6 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["CartController_completeCheckout"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/payment": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["PaymentController_createPayment"];
         delete?: never;
         options?: never;
         head?: never;
@@ -450,6 +450,7 @@ export interface components {
             firstname: string;
             lastname: string;
             email: string;
+            phone: string;
             password: string;
             /** Format: date-time */
             createdAt: string;
@@ -465,30 +466,8 @@ export interface components {
             quantity: number;
             price: number;
         };
-        Payment: {
-            id: number;
-            order_id: number;
-            order: components["schemas"]["Order"];
-            payment_method: string;
-            payment_provider: string;
-            /** @enum {string} */
-            payment_status: "pending" | "processing" | "completed" | "failed" | "expired" | "cancelled";
-            amount: number;
-            currency: string;
-            external_payment_id: string;
-            payment_url: string;
-            /** Format: date-time */
-            expires_at: string;
-            /** Format: date-time */
-            paid_at: string;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string;
-            metadata: Record<string, never>;
-        };
         Order: {
-            id: number;
+            id: string;
             user: components["schemas"]["User"];
             orderItems: components["schemas"]["OrderItem"][];
             /** Format: date-time */
@@ -496,7 +475,6 @@ export interface components {
             totalAmount: number;
             /** @enum {string} */
             order_status: "pending" | "pending_payment" | "payment_received" | "order_confirmed" | "failed" | "expired" | "awaiting_shipment" | "on_hold" | "awaiting_pickup" | "completed" | "cancelled";
-            payment: components["schemas"]["Payment"][];
         };
         UpdateUserDto: Record<string, never>;
         SignupDto: {
@@ -505,6 +483,7 @@ export interface components {
             lastname: string;
             /** Format: email */
             email: string;
+            phone: string;
             password: string;
         };
         SignupResponseDto: {
@@ -513,6 +492,7 @@ export interface components {
             firstname: string;
             lastname: string;
             email: string;
+            phone: string;
             password: string;
         };
         LoginResponseDto: {
@@ -533,15 +513,78 @@ export interface components {
         };
         /** @enum {string} */
         OrderStatus: "pending" | "pending_payment" | "payment_received" | "order_confirmed" | "failed" | "expired" | "awaiting_shipment" | "on_hold" | "awaiting_pickup" | "completed" | "cancelled";
+        GetPaymentDto: {
+            /** @description HTTP status code equivalent for the transaction result. */
+            status_code: string;
+            /**
+             * Format: uuid
+             * @description Unique ID for the transaction (UUID format).
+             */
+            transaction_id: string;
+            /** @description The gross amount of the transaction. */
+            gross_amount: number;
+            /**
+             * @description Currency code in ISO 4217 format.
+             * @enum {string}
+             */
+            currency: "USD" | "EUR" | "IDR";
+            /**
+             * Format: uuid
+             * @description Unique ID for the merchant's order (UUID format).
+             */
+            order_id: string;
+            /**
+             * @description The payment method used.
+             * @enum {string}
+             */
+            payment_type: "card" | "bank_transfer" | "e_wallet";
+            /** @description Hashed signature for verifying data integrity. */
+            signature_key: string;
+            /**
+             * @description The final status of the transaction.
+             * @enum {string}
+             */
+            transaction_status: "pending" | "success" | "failed";
+            /**
+             * @description Result of the fraud detection analysis.
+             * @enum {string}
+             */
+            fraud_status: "accept" | "deny" | "challenge";
+            /** @description A human-readable message about the status. */
+            status_message: string;
+            /** @description The unique identifier for the merchant. */
+            merchant_id: string;
+            /** @description Type of transaction processing. */
+            transaction_type: string;
+            /** @description The party that issued the payment instrument. */
+            issuer: string;
+            /** @description The payment processor that acquired the transaction. */
+            acquirer: string;
+            /**
+             * Format: date-time
+             * @description The time the transaction was initiated.
+             */
+            transaction_time: string;
+            /**
+             * Format: date-time
+             * @description The time the transaction was successfully settled.
+             */
+            settlement_time: string;
+            /**
+             * Format: date-time
+             * @description The time the payment request would have expired.
+             */
+            expiry_time: string;
+        };
         OrderDto: {
-            id: number;
+            id: string;
             user: components["schemas"]["User"];
             orderItems: components["schemas"]["OrderItem"][];
             /** Format: date-time */
             orderDate: string;
             totalAmount: number;
             order_status: components["schemas"]["OrderStatus"];
-            payment: components["schemas"]["Payment"][];
+            payment: components["schemas"]["GetPaymentDto"][];
         };
         FindAllOrderDto: {
             data: components["schemas"]["OrderDto"][];
@@ -551,16 +594,36 @@ export interface components {
             limit: number;
         };
         FindOneOrderDto: {
-            id: number;
+            payment: components["schemas"]["GetPaymentDto"];
+            id: string;
             /** Format: date-time */
             orderDate: string;
             orderItems: components["schemas"]["OrderItem"][];
             /** @enum {string} */
             order_status: "pending" | "pending_payment" | "payment_received" | "order_confirmed" | "failed" | "expired" | "awaiting_shipment" | "on_hold" | "awaiting_pickup" | "completed" | "cancelled";
-            payment: components["schemas"]["Payment"][];
             totalAmount: number;
         };
         UpdateOrderDto: Record<string, never>;
+        CreatePaymentCustomerDto: {
+            first_name: string;
+            last_name: string;
+            email: string;
+            phone: string;
+        };
+        CreatePaymentRequestDto: {
+            order_id: string;
+            amount: number;
+            customer: components["schemas"]["CreatePaymentCustomerDto"];
+            description?: string;
+        };
+        CreatePaymentResponseDto: {
+            success: boolean;
+            transaction_token?: string;
+            redirect_url?: string;
+            order_id: string;
+            message?: string;
+            error?: string;
+        };
         Cart: {
             id: number;
             userId: number;
@@ -624,7 +687,6 @@ export type CreateUserDto = components['schemas']['CreateUserDto'];
 export type GetProfileDto = components['schemas']['GetProfileDto'];
 export type User = components['schemas']['User'];
 export type OrderItem = components['schemas']['OrderItem'];
-export type Payment = components['schemas']['Payment'];
 export type Order = components['schemas']['Order'];
 export type UpdateUserDto = components['schemas']['UpdateUserDto'];
 export type SignupDto = components['schemas']['SignupDto'];
@@ -634,10 +696,14 @@ export type LoginDto = components['schemas']['LoginDto'];
 export type RefreshTokenDto = components['schemas']['RefreshTokenDto'];
 export type CreateOrderDto = components['schemas']['CreateOrderDto'];
 export type OrderStatus = components['schemas']['OrderStatus'];
+export type GetPaymentDto = components['schemas']['GetPaymentDto'];
 export type OrderDto = components['schemas']['OrderDto'];
 export type FindAllOrderDto = components['schemas']['FindAllOrderDto'];
 export type FindOneOrderDto = components['schemas']['FindOneOrderDto'];
 export type UpdateOrderDto = components['schemas']['UpdateOrderDto'];
+export type CreatePaymentCustomerDto = components['schemas']['CreatePaymentCustomerDto'];
+export type CreatePaymentRequestDto = components['schemas']['CreatePaymentRequestDto'];
+export type CreatePaymentResponseDto = components['schemas']['CreatePaymentResponseDto'];
 export type Cart = components['schemas']['Cart'];
 export type CartItem = components['schemas']['CartItem'];
 export type AddToCartDto = components['schemas']['AddToCartDto'];
@@ -1304,6 +1370,37 @@ export interface operations {
             };
         };
     };
+    PaymentController_createPayment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreatePaymentRequestDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreatePaymentResponseDto"];
+                };
+            };
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreatePaymentResponseDto"];
+                };
+            };
+        };
+    };
     CartController_getCart: {
         parameters: {
             query?: {
@@ -1510,25 +1607,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Order"];
-                };
-            };
-        };
-    };
-    PaymentController_createPayment: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Payment"];
                 };
             };
         };
