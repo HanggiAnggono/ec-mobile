@@ -9,6 +9,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import {
+  Alert,
   FlatList,
   ImageBackground,
   Pressable,
@@ -19,7 +20,7 @@ import {
 
 export const ProductDetailPage = () => {
   const { params = {} } = useRoute()
-  const { setOptions } = useNavigation()
+  const navigation = useNavigation()
   const { id } = params as { id: string }
   const { data, isLoading } = useProductsFindOne({ params: { path: { id } } })
   const [isOpen, setIsOpen] = useState(false)
@@ -35,7 +36,7 @@ export const ProductDetailPage = () => {
     if (variants?.length) {
       setVariantId(variants[0].id)
     }
-    setOptions({ title: data?.name })
+    navigation.setOptions({ title: data?.name })
   }, [variants])
 
   function handleAddToCart() {
@@ -54,9 +55,18 @@ export const ProductDetailPage = () => {
       }).then((res) => {
         setCartSessionId(res.sessionId)
       })
-      alert('Added to cart')
+      Alert.alert('Added to cart', 'Would you like to view your cart now?', [
+        {
+          text: 'Go to Cart',
+          onPress: () => navigation.navigate('Cart' as never),
+        },
+        {
+          text: 'OK',
+          style: 'cancel',
+        },
+      ])
     } catch (error) {
-      alert(`Failed to add to cart: ${JSON.stringify(error)}`)
+      Alert.alert('Failed to add to cart', JSON.stringify(error))
     }
   }
 

@@ -22,8 +22,15 @@ import {
 type product = Product
 
 export const HomeScreen = () => {
-  const { data, isLoading, error, refetch, fetchNextPage, isFetchingNextPage } =
-    useProductsFindAllInfinite()
+  const {
+    data,
+    isLoading,
+    isRefetching,
+    error,
+    refetch,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useProductsFindAllInfinite()
   const products = data?.pages.flatMap((page) => page.data) || []
 
   const { setOptions } = useNavigation()
@@ -72,7 +79,8 @@ export const HomeScreen = () => {
         renderItem={renderProduct}
         className="h-full"
         contentContainerClassName="pb-16 pt-32"
-        refreshing={isLoading}
+        refreshing={isLoading || isRefetching}
+        onRefresh={() => refetch()}
         onEndReachedThreshold={0.2}
         onEndReached={() => fetchNextPage()}
         ListFooterComponent={() => {
