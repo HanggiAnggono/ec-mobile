@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 * {
-  --color-primary: 38, 215, 19;
-  --color-background: 243 244 246; /* #F3F4F6 */
-  --color-surface: 255 255 255; /* #FFFFFF */
-  --color-text: 17 24 39; /* #111827 */
-  --color-text-secondary: 107 114 128; /* #6B7280 */
-  --color-border: 229 231 235; /* #E5E7EB */
+  --color-primary: 59, 130, 246; /* blue-500 */
+  --color-background: 239 246 255; /* soft blue tint */
+  --color-surface: 255 255 255;
+  --color-text: 17 24 39;
+  --color-text-secondary: 107 114 128;
+  --color-border: 219 234 254; /* light blue border */
 }
 
 .dark * {
-  --color-primary: 38, 215, 19;
-  --color-background: 17 24 39; /* #111827 */
-  --color-surface: 31 41 55; /* #1F2937 */
-  --color-text: 243 244 246; /* #F3F4F6 */
-  --color-text-secondary: 156 163 175; /* #9CA3AF */
-  --color-border: 75 85 99; /* #4B5563 */
+  --color-primary: 96, 165, 250; /* blue-400 */
+  --color-background: 15 23 42; /* blue-ish dark (slate-900) */
+  --color-surface: 30 41 59; /* slate-800 */
+  --color-text: 226 232 240; /* slate-200 */
+  --color-text-secondary: 148 163 184; /* slate-400 */
+  --color-border: 51 65 85; /* slate-700 */
 }

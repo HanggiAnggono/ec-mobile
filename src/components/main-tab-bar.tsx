@@ -1,3 +1,4 @@
+import { useThemes } from '@/shared/hooks/use-themes'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import clsx from 'clsx'
 import { Pressable, View } from 'react-native'
@@ -5,6 +6,7 @@ import { Pressable, View } from 'react-native'
 export const MainTabBar = (props: BottomTabBarProps) => {
   const tabs = Object.entries(props.descriptors)
   const activeTabIndex = props.state.index
+  const { text, primary } = useThemes()
 
   return (
     <View className="flex flex-row justify-between items-center mx-10 bg-background rounded-full absolute bottom-4 left-4 right-4 shadow-lg shadow-red-400 h-20">
@@ -34,7 +36,7 @@ export const MainTabBar = (props: BottomTabBarProps) => {
             )}
           >
             {descriptor.options.tabBarIcon?.({
-              color: isActive ? 'green' : 'gray',
+              color: isActive ? text.toString() : primary.toString(),
               focused: isActive,
               size: 30,
             })}

@@ -1,21 +1,7 @@
 import { LinearGradient } from '@/components/gradient'
+import { dark, light } from '@/shared/themes'
 import { ColorValue, useColorScheme, View, ViewProps } from 'react-native'
 
-const dark: readonly [ColorValue, ColorValue, ...ColorValue[]] = [
-  'rgb(0,200,0)',
-  'rgb(0,100,0)',
-  'rgb(0, 50, 0)',
-  'rgb(0,20,0)',
-  'rgb(0,0,0)',
-]
-
-const light: readonly [ColorValue, ColorValue, ...ColorValue[]] = [
-  'rgba(0,200,0,1)',
-  '#72ec72',
-  'rgb(216, 255, 216)',
-  'rgba(206, 250, 206, 1)',
-  'rgba(255, 255, 255, 1)',
-]
 
 export const Layout = (props: ViewProps) => {
   const scheme = useColorScheme()

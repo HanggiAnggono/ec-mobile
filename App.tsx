@@ -24,27 +24,27 @@ import { CheckoutScreen } from '@/screens/checkout-screen'
 import { PaymentScreen } from '@/screens/payment-screen'
 import { OrdersScreen } from '@/screens/orders-screen'
 import { MainTabBar } from '@/components/main-tab-bar'
-import { useColorScheme } from 'react-native'
+import { useThemes } from '@/shared/hooks/use-themes'
 
 const Stack = createStackNavigator<RootStackParamList>()
 const HomeTab = createBottomTabNavigator()
 
 function HomeNavigator() {
   const { token } = useAuthStore()
-  const scheme = useColorScheme()
+  const { primary, text } = useThemes()
 
   return (
     <HomeTab.Navigator
-      tabBar={(p) => MainTabBar(p)}
+      tabBar={(p) => <MainTabBar {...p} />}
       screenOptions={{
         headerTransparent: false,
         headerStyle: {
-          backgroundColor: scheme === 'dark' ? '#126512' : '#57d657',
+          backgroundColor: primary,
           borderBottomWidth: 0,
           elevation: 0,
           shadowOpacity: 0,
         },
-        headerTintColor: scheme === 'dark' ? 'white' : 'black',
+        headerTintColor: text.toString(),
       }}
     >
       <HomeTab.Screen
@@ -108,7 +108,7 @@ function handleUnauthorized(request, queryClient: QueryClient) {
 
 export default function App() {
   const { token } = useAuthStore()
-  const scheme = useColorScheme()
+  const { primary, text } = useThemes()
   const [client] = React.useState(
     () =>
       new QueryClient({
@@ -160,9 +160,9 @@ export default function App() {
           key={token ? 'user' : 'guest'}
           screenOptions={{
             headerStyle: {
-              backgroundColor: scheme === 'dark' ? '#1a7a1a' : '#57d657',
+              backgroundColor: primary,
             },
-            headerTintColor: scheme === 'dark' ? 'white' : 'black',
+            headerTintColor: text.toString(),
           }}
         >
           {!token ? (
