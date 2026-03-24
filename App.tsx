@@ -176,13 +176,19 @@ export default function App() {
               <Stack.Screen
                 name={Routes.Login}
                 component={LoginScreen}
-                options={{ headerLeftContainerStyle: { opacity: 0 } }}
+                options={{
+                  headerShown: false,
+                  headerLeftContainerStyle: { opacity: 0 },
+                }}
               />
               {/* signup screen */}
               <Stack.Screen
                 name={Routes.Signup}
                 component={SignupScreen}
-                options={{ headerLeftContainerStyle: { opacity: 0 } }}
+                options={{
+                  headerShown: false,
+                  headerLeftContainerStyle: { opacity: 0 },
+                }}
               />
             </>
           ) : (

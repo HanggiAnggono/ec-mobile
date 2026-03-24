@@ -64,7 +64,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   return (
-    <View className="flex-1 justify-center items-center bg-white p-4">
+    <View className="flex-1 justify-center items-center bg-background p-4">
       <View className="my-auto w-full">
         {!isAddAccount ? (
           <View className="w-full items-center">
@@ -73,7 +73,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 <Button
                   key={acc.username}
                   className={clsx(
-                    'flex-row gap-2 items-center bg-white p-3 rounded-md mb-3 border-gray-400 border w-full'
+                    'flex-row gap-2 items-center bg-background p-3 rounded-md mb-3 border-gray-400 border w-full'
                   )}
                   icon="user-switch"
                   onPress={handleExistingLogin(acc)}
@@ -114,7 +114,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
       </View>
 
       <View className="flex flex-row items-center">
-        <Text>Dont' have an account?</Text>
+        <Text className="text-primary">Dont' have an account?</Text>
         <Button onPress={() => navigation.navigate('Signup')}>Sign Up</Button>
       </View>
       <View className="mt-4 flex-row items-center">

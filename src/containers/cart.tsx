@@ -1,11 +1,13 @@
 import Icon from '@/components/icon'
 import { useGetCart } from '@/module/cart/usecases/use-get-cart'
+import { useThemes } from '@/shared/hooks/use-themes'
 import { Link, useFocusEffect } from '@react-navigation/native'
 import { useCallback } from 'react'
 import { Text, View } from 'react-native'
 
 export const CartContainer = () => {
   const { refetch, data: cart } = useGetCart()
+  const { text } = useThemes()
 
   // Sync cart session id
   useFocusEffect(
@@ -26,7 +28,7 @@ export const CartContainer = () => {
             <Text className="text-xs">{cart?.items?.length}</Text>
           </View>
         ) : null}
-        <Icon name="shopping-cart" size={24} />
+        <Icon name="shopping-cart" size={24} color={text.toString()} />
       </View>
     </Link>
   )

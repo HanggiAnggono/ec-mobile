@@ -81,38 +81,38 @@ export const SignupScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   return (
-    <View className="flex-1 justify-center items-center bg-white p-4">
-      <Text className="text-2xl font-bold mb-6">Sign Up</Text>
+    <View className="flex-1 justify-center items-center bg-background p-4">
+      <Text className="text-2xl font-bold mb-6 text-text">Sign Up</Text>
       <TextInput
-        className="w-full border border-gray-300 rounded p-2 mb-4"
+        className="w-full border border-gray-300 rounded p-2 mb-4 placeholder:text-text"
         placeholder="Full Name"
         value={fullname}
         onChangeText={setFullname}
         autoCapitalize="none"
       />
       <TextInput
-        className="w-full border border-gray-300 rounded p-2 mb-4"
+        className="w-full border border-gray-300 rounded p-2 mb-4 placeholder:text-text"
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
       />
       <TextInput
-        className="w-full border border-gray-300 rounded p-2 mb-4"
+        className="w-full border border-gray-300 rounded p-2 mb-4 placeholder:text-text"
         placeholder="Phone Number"
         value={phone}
         onChangeText={setPhone}
         keyboardType="phone-pad"
       />
       <TextInput
-        className="w-full border border-gray-300 rounded p-2 mb-6"
+        className="w-full border border-gray-300 rounded p-2 mb-4 placeholder:text-text"
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
       <TextInput
-        className="w-full border border-gray-300 rounded p-2 mb-6"
+        className="w-full border border-gray-300 rounded p-2 mb-4 placeholder:text-text"
         placeholder="Confirm Password"
         value={confirmPassword}
         onChangeText={setConfirmPassword}
@@ -124,7 +124,7 @@ export const SignupScreen: React.FC<Props> = ({ navigation }) => {
         disabled={isPending}
       />
       <View className="mt-4 flex flex-row items-center">
-        <Text>Already have an account?</Text>
+        <Text className="text-text">Already have an account?</Text>
         <Button
           title="Log In"
           onPress={() => navigation.goBack()}
