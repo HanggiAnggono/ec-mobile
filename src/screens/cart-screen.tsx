@@ -1,5 +1,6 @@
 import { Button } from '@/components/button'
 import { useGetCart } from '@/module/cart/usecases/use-get-cart'
+import { useCartRemoveCartItem } from '@/shared/query/cart/use-cart-remove-cart-item.mutation'
 import { useCartUpdateCartItem } from '@/shared/query/cart/use-cart-update-cart-item.mutation'
 import { CartItem } from '@/shared/types/api'
 import { Alert, FlatList, Image, Pressable, Text, View } from 'react-native'
@@ -11,6 +12,8 @@ import { useEffect, useState } from 'react'
 
 export const CartScreen = (props: StackScreenProp<'Cart'>) => {
   const { data: cart, refetch } = useGetCart()
+  const { mutateAsync: removeCartItem, isPending: isRemoving } =
+    useCartRemoveCartItem()
   const { mutateAsync: updateCartItem, isPending: isUpdating } =
     useCartUpdateCartItem()
   const [resetTokens, setResetTokens] = useState<Record<string, number>>({})
@@ -49,17 +52,26 @@ export const CartScreen = (props: StackScreenProp<'Cart'>) => {
     }
   }
 
+  async function handleRemoveItem(item: CartItem) {
+    await removeCartItem({
+      params: { path: { id: String(item.id) } },
+    })
+
+    refetch()
+  }
+
   function renderItem({ item }: { item: CartItem }) {
     return (
-      <Pressable
-        onPress={() => {
-          return props.navigation.navigate(Routes.ProductDetail, {
-            id: item.productVariant.product.id.toString(),
-          })
-        }}
-      >
-        <Card className="m-2 p-4 rounded-lg shadow">
-          <View className="flex-row">
+      <Card className="m-2 p-4 rounded-lg shadow">
+        <View className="flex-row">
+          <Pressable
+            className="flex-row flex-1"
+            onPress={() => {
+              return props.navigation.navigate(Routes.ProductDetail, {
+                id: item.productVariant.product.id.toString(),
+              })
+            }}
+          >
             <Image
               source={{
                 uri: `https://picsum.photos/140/140?random=${item.productVariant.product.name}`,
@@ -73,8 +85,16 @@ export const CartScreen = (props: StackScreenProp<'Cart'>) => {
               </Text>
               <Text className="text-text">{item.productVariant.name}</Text>
             </View>
-            <View className="items-end">
-              <Text className="font-bold text-text">Price: {item.price}</Text>
+          </Pressable>
+          <View className="items-end">
+            <Text className="font-bold text-text">Price: {item.price}</Text>
+            <View className="flex-row items-end">
+              <Button
+                className="mt-2"
+                icon="delete"
+                onPress={() => handleRemoveItem(item)}
+                disabled={isRemoving}
+              />
               <QuantityStepper
                 value={item.quantity}
                 min={1}
@@ -86,8 +106,8 @@ export const CartScreen = (props: StackScreenProp<'Cart'>) => {
               />
             </View>
           </View>
-        </Card>
-      </Pressable>
+        </View>
+      </Card>
     )
   }
 
@@ -161,7 +181,7 @@ const QuantityStepper = ({
       >
         -
       </Button>
-      <Text className="text-text">Qty: {localValue}</Text>
+      <Text className="text-text">{localValue}</Text>
       <Button
         className="px-2"
         onPress={() => setLocalValue(localValue + 1)}
