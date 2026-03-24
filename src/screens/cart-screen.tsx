@@ -69,6 +69,7 @@ export const CartScreen = (props: StackScreenProp<'Cart'>) => {
             onPress={() => {
               return props.navigation.navigate(Routes.ProductDetail, {
                 id: item.productVariant.product.id.toString(),
+                variantId: item.productVariant.id.toString(),
               })
             }}
           >

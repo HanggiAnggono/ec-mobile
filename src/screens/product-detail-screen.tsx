@@ -2,7 +2,9 @@ import { BottomSheet } from '@/components/bottom-sheet'
 import { Button } from '@/components/button'
 import { Layout } from '@/layout/layout'
 import { formatCurrency } from '@/module/utils'
+import { useGetCart } from '@/module/cart/usecases/use-get-cart'
 import { useCartAddToCart } from '@/shared/query/cart/use-cart-add-to-cart.mutation'
+import { useCartUpdateCartItem } from '@/shared/query/cart/use-cart-update-cart-item.mutation'
 import { useProductsFindOne } from '@/shared/query/products/use-products-find-one.query'
 import { useCart } from '@/store/cart.store'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -17,27 +19,36 @@ import {
   Text,
   View,
 } from 'react-native'
+import { StackScreenProp } from '.'
 
-export const ProductDetailPage = () => {
-  const { params = {} } = useRoute()
+export const ProductDetailPage = (props: StackScreenProp<'ProductDetail'>) => {
   const navigation = useNavigation()
-  const { id } = params as { id: string }
+  const { id = '', variantId: initialVariantId } = props.route.params || {}
   const { data, isLoading } = useProductsFindOne({ params: { path: { id } } })
   const [isOpen, setIsOpen] = useState(false)
   const { cartSessionId, setCartSessionId } = useCart()
+  const { data: cart, refetch: refetchCart } = useGetCart()
   const { mutateAsync: addToCart, isPending, error } = useCartAddToCart()
+  const { mutateAsync: updateCartItem, isPending: isUpdating } =
+    useCartUpdateCartItem()
 
   const variants = data?.variants || []
-  const [variantId, setVariantId] = useState(variants?.[0]?.id || 0)
-  const [quantity, setQuantity] = useState(1)
+  const [variantId, setVariantId] = useState<number>(Number(initialVariantId))
+  const [quantity, setQuantity] = useState(0)
   const selectedVariant = variants?.find((v) => v.id === variantId)
+  const existingCartItem = cart?.items?.find(
+    (item) => item.productVariant.id === variantId
+  )
 
   useEffect(() => {
-    if (variants?.length) {
+    if (existingCartItem) {
+      setVariantId(existingCartItem.productVariantId)
+      setQuantity(existingCartItem.quantity)
+    } else if (!initialVariantId && variants?.length) {
       setVariantId(variants[0].id)
     }
     navigation.setOptions({ title: data?.name })
-  }, [variants])
+  }, [variants, existingCartItem])
 
   function handleAddToCart() {
     setIsOpen(true)
@@ -45,16 +56,23 @@ export const ProductDetailPage = () => {
 
   async function handleSubmit() {
     try {
-      console.log('submitting')
-      await addToCart({
-        body: {
-          productVariantId: variantId,
-          quantity,
-          sessionId: cartSessionId || '',
-        },
-      }).then((res) => {
-        setCartSessionId(res.sessionId)
-      })
+      if (existingCartItem) {
+        await updateCartItem({
+          params: { path: { id: String(existingCartItem.id) } },
+          body: { quantity: quantity },
+        })
+        refetchCart()
+      } else {
+        await addToCart({
+          body: {
+            productVariantId: variantId,
+            quantity,
+            sessionId: cartSessionId || '',
+          },
+        }).then((res) => {
+          setCartSessionId(res.sessionId)
+        })
+      }
       Alert.alert('Added to cart', 'Would you like to view your cart now?', [
         {
           text: 'Go to Cart',
@@ -70,6 +88,16 @@ export const ProductDetailPage = () => {
     }
   }
 
+  const handleChangeVariant =
+    (item: NonNullable<typeof data>['variants'][0]) => (e) => {
+      setVariantId(item.id)
+      if (item.id === existingCartItem?.productVariantId) {
+        setQuantity(existingCartItem.quantity)
+      } else {
+        setQuantity(1)
+      }
+    }
+
   // data?.variants?.[0]
   const renderVariants = ({
     item,
@@ -84,7 +112,7 @@ export const ProductDetailPage = () => {
           'rounded-full p-2 px-4 self-start mr-2',
           selected ? 'bg-primary' : 'bg-slate-500'
         )}
-        onPress={() => setVariantId(item.id)}
+        onPress={handleChangeVariant(item)}
       >
         <Text className={clsx('text-sm text-surface')}>{item.name}</Text>
       </Pressable>
@@ -123,7 +151,9 @@ export const ProductDetailPage = () => {
           <Button icon="message" className="flex items-center justify-center">
             Chat
           </Button>
-          <Button onPress={handleAddToCart}>Add To Cart</Button>
+          <Button onPress={handleAddToCart}>
+            {existingCartItem ? 'Update Cart' : 'Add to Cart'}
+          </Button>
         </View>
       </View>
 
@@ -167,9 +197,9 @@ export const ProductDetailPage = () => {
             className="self-end"
             icon="shopping-cart"
             onPress={handleSubmit}
-            disabled={isPending}
+            disabled={isPending || isUpdating}
           >
-            Add To Cart
+            {existingCartItem ? 'Update Cart' : 'Add to Cart'}
           </Button>
         </View>
       </BottomSheet>
