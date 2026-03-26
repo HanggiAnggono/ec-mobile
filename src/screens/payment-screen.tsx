@@ -5,6 +5,7 @@ import React from 'react'
 import {
   ActivityIndicator,
   Image,
+  Linking,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -13,21 +14,22 @@ import {
 } from 'react-native'
 import { StackScreenProp } from '.'
 import { Layout } from '@/layout/layout'
-import { usePaymentCreatePayment } from '@/shared/query/payment/use-payment-create-payment.mutation'
-
 export const PaymentScreen: React.FC<StackScreenProp<'Payment'>> = ({
   navigation,
   route,
 }) => {
-  // Get order details from navigation params (or use hardcoded for now)
   const orderId = route.params?.orderId || ''
+  const transactionToken = route.params?.transactionToken
   const { isFetching, data: orderDetails } = useOrderFindOne({
     params: { path: { id: orderId } },
   })
-  const { mutateAsync: createPayment } = usePaymentCreatePayment()
 
   const handlePayNow = () => {
-    createPayment({})
+    if (transactionToken) {
+      Linking.openURL(
+        `https://app.sandbox.midtrans.com/snap/v4/redirection/${transactionToken}`
+      )
+    }
   }
 
   const handleBackToHome = () => {

@@ -50,7 +50,7 @@ export const CheckoutScreen: React.FC<StackScreenProp<'Checkout'>> = ({
       body: { paymentMethod: payment },
       params: { path: { sessionId: cart?.sessionId } },
     }).then((resp) => {
-      navigation.navigate('Payment', { orderId: resp.id.toString() })
+      navigation.navigate('Payment', { orderId: resp.orderId, transactionToken: resp.transactionToken })
     })
   }
 
