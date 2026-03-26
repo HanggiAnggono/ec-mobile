@@ -1,11 +1,12 @@
 import { CartContainer } from '@/containers/cart'
-import { Layout } from '@/layout/layout'
 import { LinearGradient } from '@/components/gradient'
+import { Layout } from '@/layout/layout'
 import { useProductCategoryFindAll } from '@/shared/query/product-category/use-product-category-find-all.query'
 import { useProductsFindAllInfinite } from '@/shared/query/products/use-products-find-all.query'
 import { Product } from '@/shared/types/api'
 import { Link, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { StackNavigationOptions } from '@react-navigation/stack'
+import clsx from 'clsx'
 import { useCallback, useMemo, useState } from 'react'
 import {
   ActivityIndicator,
@@ -20,19 +21,6 @@ import {
 
 type TProduct = Product
 
-// ─── Design tokens (DESIGN.md) ────────────────────────────────────────────────
-const C = {
-  surface: '#060e20',
-  surfaceContainer: '#0f1930',
-  surfaceContainerHigh: '#141f38',
-  primary: '#90abff',
-  primaryDim: '#316bf3',
-  tertiary: '#ffa7eb',
-  text: '#e8eeff',
-  textSecondary: '#c8d0e0',
-  outline: '#40485d',
-} as const
-
 const getPrice = (product: TProduct): string => {
   const price = product.variants?.[0]?.price
   return price != null ? `$${Number(price).toFixed(2)}` : ''
@@ -44,54 +32,35 @@ const imageUri = (seed: string, w = 200, h = 200) =>
 // ─── HeroCard ─────────────────────────────────────────────────────────────────
 const HeroCard = ({ product }: { product: TProduct }) => (
   <Link screen="ProductDetail" params={{ id: product.id }}>
-    <View style={{ borderRadius: 20, overflow: 'hidden', height: 220, marginBottom: 12 }}>
+    <View className="rounded-[20px] overflow-hidden h-[220px] mb-3">
       <ImageBackground
         source={{ uri: imageUri(product.name, 400, 300) }}
-        style={{ flex: 1 }}
+        className="flex-1"
         resizeMode="cover"
       >
         <LinearGradient
-          colors={['transparent', 'rgba(6,14,32,0.82)', C.surface]}
-          style={{ flex: 1, padding: 16, justifyContent: 'flex-end' }}
+          colors={['transparent', 'rgba(6,14,32,0.82)', '#060e20']}
+          className="flex-1 p-4 justify-end"
         >
-          {/* NEW ARRIVAL badge */}
-          <View
-            style={{
-              position: 'absolute',
-              top: 16,
-              left: 16,
-              backgroundColor: 'rgba(144,171,255,0.12)',
-              borderRadius: 20,
-              paddingHorizontal: 10,
-              paddingVertical: 4,
-              borderWidth: 1,
-              borderColor: 'rgba(144,171,255,0.25)',
-            }}
-          >
-            <Text style={{ color: C.primary, fontSize: 10, fontWeight: '700', letterSpacing: 1 }}>
+          <View className="absolute top-4 left-4 bg-[#90abff]/10 rounded-full px-3 py-1 border border-[#90abff]/25">
+            <Text className="text-[#90abff] text-[10px] font-bold tracking-widest">
               NEW ARRIVAL
             </Text>
           </View>
 
-          <Text style={{ color: C.text, fontSize: 24, fontWeight: '900', marginBottom: 4 }}>
-            {product.name}
-          </Text>
-          <Text
-            style={{ color: C.textSecondary, fontSize: 12, marginBottom: 12 }}
-            numberOfLines={2}
-          >
+          <Text className="text-[#e8eeff] text-2xl font-black mb-1">{product.name}</Text>
+          <Text className="text-[#c8d0e0] text-xs mb-3" numberOfLines={2}>
             {product.description}
           </Text>
 
-          {/* CTA button */}
           <LinearGradient
-            colors={[C.primary, C.primaryDim]}
+            colors={['#90abff', '#316bf3']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
-            style={{ borderRadius: 24, alignSelf: 'flex-start' }}
+            className="rounded-full self-start"
           >
-            <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-              <Text style={{ color: '#fff', fontWeight: '700', fontSize: 14 }}>
+            <View className="px-5 py-2.5">
+              <Text className="text-white font-bold text-sm">
                 {`Shop Now${product.variants?.[0]?.price ? ` — $${product.variants[0].price}` : ''}`}
               </Text>
             </View>
@@ -105,27 +74,15 @@ const HeroCard = ({ product }: { product: TProduct }) => (
 // ─── TrendingRow ──────────────────────────────────────────────────────────────
 const TrendingRow = ({ product }: { product: TProduct }) => (
   <Link screen="ProductDetail" params={{ id: product.id }}>
-    <View
-      style={{
-        flexDirection: 'row',
-        backgroundColor: C.surfaceContainer,
-        borderRadius: 16,
-        overflow: 'hidden',
-        marginBottom: 10,
-        height: 80,
-        alignItems: 'center',
-      }}
-    >
+    <View className="flex-row bg-[#0f1930] rounded-2xl overflow-hidden mb-2.5 h-20 items-center">
       <ImageBackground
-        source={{ uri: imageUri(product.name + '-trending', 80, 80) }}
-        style={{ width: 80, height: 80 }}
+        source={{ uri: imageUri(product.name + '-t', 80, 80) }}
+        className="w-20 h-20"
         resizeMode="cover"
       />
-      <View style={{ flex: 1, paddingHorizontal: 14 }}>
-        <Text style={{ color: C.text, fontWeight: '700', fontSize: 15 }}>{product.name}</Text>
-        <Text style={{ color: C.primary, fontWeight: '600', fontSize: 14, marginTop: 2 }}>
-          {getPrice(product)}
-        </Text>
+      <View className="flex-1 px-3.5">
+        <Text className="text-[#e8eeff] font-bold text-[15px]">{product.name}</Text>
+        <Text className="text-[#90abff] font-semibold text-sm mt-0.5">{getPrice(product)}</Text>
       </View>
     </View>
   </Link>
@@ -134,47 +91,26 @@ const TrendingRow = ({ product }: { product: TProduct }) => (
 // ─── CuratedCard ──────────────────────────────────────────────────────────────
 const CuratedCard = ({ product, staggered }: { product: TProduct; staggered: boolean }) => (
   <Link screen="ProductDetail" params={{ id: product.id }} className="w-1/2">
-    <View style={{ padding: 6, paddingTop: staggered ? 24 : 6, width: '100%' }}>
-      <View style={{ backgroundColor: C.surfaceContainer, borderRadius: 20, overflow: 'hidden' }}>
+    <View className={clsx('p-1.5 w-full', staggered ? 'pt-6' : 'pt-1.5')}>
+      <View className="bg-[#0f1930] rounded-[20px] overflow-hidden">
         <View>
           <ImageBackground
-            source={{ uri: imageUri(product.name + '-grid', 200, 160) }}
-            style={{ width: '100%', height: 160 }}
+            source={{ uri: imageUri(product.name + '-g', 200, 160) }}
+            className="w-full h-40"
             resizeMode="cover"
           />
-          {/* Favourite overlay */}
-          <View
-            style={{
-              position: 'absolute',
-              top: 8,
-              right: 8,
-              width: 32,
-              height: 32,
-              borderRadius: 16,
-              backgroundColor: 'rgba(15,25,48,0.72)',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text style={{ color: C.textSecondary, fontSize: 16 }}>♡</Text>
+          <View className="absolute top-2 right-2 w-8 h-8 rounded-full bg-[#0f1930]/70 items-center justify-center">
+            <Text className="text-[#c8d0e0] text-base">♡</Text>
           </View>
         </View>
-        <View style={{ padding: 12 }}>
-          <Text
-            style={{ color: C.text, fontWeight: '700', fontSize: 14 }}
-            numberOfLines={2}
-          >
+        <View className="p-3">
+          <Text className="text-[#e8eeff] font-bold text-sm" numberOfLines={2}>
             {product.name}
           </Text>
-          <Text
-            style={{ color: C.textSecondary, fontSize: 12, marginTop: 2 }}
-            numberOfLines={1}
-          >
+          <Text className="text-[#c8d0e0] text-xs mt-0.5" numberOfLines={1}>
             {product.category?.name}
           </Text>
-          <Text style={{ color: C.primary, fontWeight: '700', fontSize: 15, marginTop: 6 }}>
-            {getPrice(product)}
-          </Text>
+          <Text className="text-[#90abff] font-bold text-[15px] mt-1.5">{getPrice(product)}</Text>
         </View>
       </View>
     </View>
@@ -199,19 +135,10 @@ const HomeHeader = ({
 }: HomeHeaderProps) => (
   <View>
     {/* Trending Now */}
-    <View style={{ paddingHorizontal: 16, paddingTop: 8 }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 14,
-        }}
-      >
-        <Text style={{ color: C.text, fontSize: 22, fontWeight: '800' }}>Trending Now</Text>
-        <Text style={{ color: C.primary, fontSize: 13, fontWeight: '600', letterSpacing: 0.5 }}>
-          VIEW ALL
-        </Text>
+    <View className="px-4 pt-2">
+      <View className="flex-row justify-between items-center mb-3.5">
+        <Text className="text-[#e8eeff] text-[22px] font-extrabold">Trending Now</Text>
+        <Text className="text-[#90abff] text-[13px] font-semibold tracking-wide">VIEW ALL</Text>
       </View>
       {hero && <HeroCard product={hero} />}
       {trending.map((p) => (
@@ -220,32 +147,28 @@ const HomeHeader = ({
     </View>
 
     {/* Category Tabs */}
-    <View style={{ marginVertical: 16 }}>
+    <View className="my-4">
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
         data={categories}
         keyExtractor={(c) => c}
-        contentContainerStyle={{ paddingHorizontal: 16 }}
+        contentContainerClassName="px-4"
         renderItem={({ item }) => {
           const active = item === (selectedCategory ?? 'All')
           return (
             <TouchableOpacity
               onPress={() => onSelectCategory(item === 'All' ? null : item)}
-              style={{
-                backgroundColor: active ? C.primary : C.surfaceContainerHigh,
-                borderRadius: 24,
-                paddingHorizontal: 18,
-                paddingVertical: 8,
-                marginRight: 8,
-              }}
+              className={clsx(
+                'rounded-full px-[18px] py-2 mr-2',
+                active ? 'bg-[#90abff]' : 'bg-[#141f38]'
+              )}
             >
               <Text
-                style={{
-                  color: active ? C.surface : C.textSecondary,
-                  fontWeight: '600',
-                  fontSize: 13,
-                }}
+                className={clsx(
+                  'font-semibold text-[13px]',
+                  active ? 'text-[#060e20]' : 'text-[#c8d0e0]'
+                )}
               >
                 {item}
               </Text>
@@ -256,8 +179,8 @@ const HomeHeader = ({
     </View>
 
     {/* Curated Essentials heading */}
-    <View style={{ paddingHorizontal: 16, marginBottom: 4 }}>
-      <Text style={{ color: C.text, fontSize: 22, fontWeight: '800' }}>Curated Essentials</Text>
+    <View className="px-4 mb-1">
+      <Text className="text-[#e8eeff] text-[22px] font-extrabold">Curated Essentials</Text>
     </View>
   </View>
 )
@@ -272,67 +195,39 @@ type HomeFooterProps = {
 const HomeFooter = ({ isFetchingNextPage, email, onEmailChange }: HomeFooterProps) => (
   <View>
     {isFetchingNextPage && (
-      <ActivityIndicator size="large" color={C.primary} style={{ marginVertical: 16 }} />
+      <ActivityIndicator size="large" color="#90abff" className="my-4" />
     )}
 
     {/* Newsletter */}
-    <View
-      style={{
-        margin: 16,
-        marginTop: 24,
-        backgroundColor: C.surfaceContainer,
-        borderRadius: 24,
-        padding: 24,
-        alignItems: 'center',
-      }}
-    >
-      <Text
-        style={{
-          color: C.tertiary,
-          fontSize: 22,
-          fontWeight: '800',
-          textAlign: 'center',
-          marginBottom: 8,
-        }}
-      >
+    <View className="m-4 mt-6 bg-[#0f1930] rounded-3xl p-6 items-center">
+      <Text className="text-[#ffa7eb] text-[22px] font-extrabold text-center mb-2">
         Join the Inner Circle
       </Text>
-      <Text
-        style={{ color: C.textSecondary, fontSize: 13, textAlign: 'center', marginBottom: 20 }}
-      >
+      <Text className="text-[#c8d0e0] text-[13px] text-center mb-5">
         Get exclusive access to limited drops and 15% off your first neon-powered purchase.
       </Text>
       <TextInput
         placeholder="Email address"
-        placeholderTextColor={C.outline}
+        placeholderTextColor="#40485d"
         value={email}
         onChangeText={onEmailChange}
         keyboardType="email-address"
         autoCapitalize="none"
-        style={{
-          width: '100%',
-          backgroundColor: C.surfaceContainerHigh,
-          borderRadius: 12,
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-          color: C.text,
-          fontSize: 14,
-          marginBottom: 12,
-        }}
+        className="w-full bg-[#141f38] rounded-xl px-4 py-3 text-[#e8eeff] text-sm mb-3"
       />
       <LinearGradient
-        colors={[C.primary, C.primaryDim]}
+        colors={['#90abff', '#316bf3']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
-        style={{ borderRadius: 24, width: '100%' }}
+        className="rounded-full w-full"
       >
-        <TouchableOpacity style={{ paddingVertical: 14, alignItems: 'center' }}>
-          <Text style={{ color: '#fff', fontWeight: '700', fontSize: 16 }}>Join</Text>
+        <TouchableOpacity className="py-3.5 items-center">
+          <Text className="text-white font-bold text-base">Join</Text>
         </TouchableOpacity>
       </LinearGradient>
     </View>
 
-    <View style={{ height: 120 }} />
+    <View className="h-28" />
   </View>
 )
 
@@ -356,9 +251,9 @@ export const HomeScreen = () => {
   )
 
   const categories = useMemo(() => {
-    const apiCats = (categoryData as any)?.map?.((c: any) => c.name as string).filter(Boolean) ?? []
+    const apiCats =
+      (categoryData as any)?.map?.((c: any) => c.name as string).filter(Boolean) ?? []
     if (apiCats.length > 0) return ['All', ...apiCats]
-    // Fallback: derive from loaded products
     const fromProducts = Array.from(
       new Set(products.map((p) => p.category?.name).filter(Boolean) as string[])
     )
@@ -382,20 +277,13 @@ export const HomeScreen = () => {
 
   if (error) {
     return (
-      <View
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: C.surface }}
-      >
-        <Text style={{ color: C.text, marginBottom: 12 }}>Error: {String(error)}</Text>
+      <View className="flex-1 justify-center items-center bg-[#060e20]">
+        <Text className="text-[#e8eeff] mb-3">Error: {String(error)}</Text>
         <Pressable
           onPress={() => refetch()}
-          style={{
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-            backgroundColor: C.primary,
-            borderRadius: 24,
-          }}
+          className="px-5 py-2.5 bg-[#90abff] rounded-full"
         >
-          <Text style={{ color: '#fff', fontWeight: '600' }}>Reload</Text>
+          <Text className="text-white font-semibold">Reload</Text>
         </Pressable>
       </View>
     )
@@ -429,7 +317,7 @@ export const HomeScreen = () => {
         onRefresh={() => refetch()}
         onEndReachedThreshold={0.2}
         onEndReached={() => fetchNextPage()}
-        contentContainerStyle={{ paddingTop: 100 }}
+        contentContainerClassName="pt-24"
         showsVerticalScrollIndicator={false}
       />
     </Layout>
