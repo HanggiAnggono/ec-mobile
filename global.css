@@ -3,19 +3,21 @@
 @tailwind utilities;
 
 * {
-  --color-primary: 59, 130, 246; /* blue-500 */
-  --color-background: 239 246 255; /* soft blue tint */
+  /* Light mode — softened Neon Luminary palette */
+  --color-primary: 49, 107, 243;     /* #316bf3 primary-dim */
+  --color-background: 235 240 255;   /* light wash */
   --color-surface: 255 255 255;
-  --color-text: 17 24 39;
-  --color-text-secondary: 107 114 128;
-  --color-border: 219 234 254; /* light blue border */
+  --color-text: 6 14 32;             /* #060e20 inverted */
+  --color-text-secondary: 64 72 93;  /* #40485d outline-variant */
+  --color-border: 200 210 230;
 }
 
 .dark * {
-  --color-primary: 96, 165, 250; /* blue-400 */
-  --color-background: 15 23 42; /* blue-ish dark (slate-900) */
-  --color-surface: 30 41 59; /* slate-800 */
-  --color-text: 226 232 240; /* slate-200 */
-  --color-text-secondary: 148 163 184; /* slate-400 */
-  --color-border: 51 65 85; /* slate-700 */
+  /* Dark mode — Neon Luminary (DESIGN.md) */
+  --color-primary: 144, 171, 255;    /* #90abff */
+  --color-background: 6 14 32;       /* #060e20 surface base */
+  --color-surface: 15 25 48;         /* #0f1930 surface-container */
+  --color-text: 232 238 255;         /* #e8eeff */
+  --color-text-secondary: 200 208 224; /* #c8d0e0 */
+  --color-border: 64 72 93;          /* #40485d outline-variant */
 }
